@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {ProfileTabSection} from '../../components';
-import {getData} from '../../utils';
-import {BE_API_HOST} from '@env';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { ProfileTabSection } from '../../components';
+import { getData } from '../../utils';
+import { BE_API_HOST } from '@env';
 
-const Profile = ({navigation}) => {
+const Profile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
     getData('userProfile').then(res => {
-      // navigation.addListener('focus', () => {
-      updateUserProfile();
-      // });
+      navigation.addListener('focus', () => {
+        updateUserProfile();
+      });
     });
   }, [navigation]);
 
@@ -27,7 +27,7 @@ const Profile = ({navigation}) => {
           <View style={styles.borderPhoto}>
             <Image
               source={{
-                uri: `${BE_API_HOST}/lihat-file/profile?path=${userProfile.profile_photo_path}`,
+                uri: `${BE_API_HOST}/lihat-file/profile?path=${userProfile.profile_photo_url}`,
               }}
               style={styles.photoContainer}
             />
