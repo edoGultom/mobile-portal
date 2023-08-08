@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Header, HomeProfile} from '../../components';
-import {getData, showMessage} from '../../utils';
-import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
-import {IcEmptyImage} from '../../assets';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {addPhotoKtp} from '../../redux/formSlice';
+import React, { useEffect, useState } from 'react';
+import { Button, Header, HomeProfile } from '../../components';
+import { getData, showMessage } from '../../utils';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { IcEmptyImage } from '../../assets';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { addPhotoKtp } from '../../redux/formSlice';
+import { useDispatch } from 'react-redux';
+import { PermissionsAndroid } from 'react-native';
 
-const Form = ({navigation}) => {
+const Form = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState({});
   const [photo, setPhoto] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getData('userProfile').then(res => {
@@ -18,6 +21,59 @@ const Form = ({navigation}) => {
   const onContinue = () => {
     navigation.navigate('FormDetail');
   };
+  const openCamera = () => {
+    launchCamera(
+      {
+        quality: 0.5,
+        maxHeight: 300,
+        maxWidth: 300,
+        mediaType: 'photo',
+        saveToPhotos: true,
+        includeBase64: true,
+      },
+      response => {
+        if (response.didCancel || response.errorCode) {
+          showMessage('Anda tidak memilih photo');
+        } else {
+          if (response.assets && response.assets?.length !== 0) {
+            const source = { uri: response.assets[0].uri };
+            const datImage = {
+              uri: response.assets[0].uri,
+              type: response.assets[0].type,
+              name: response.assets[0].fileName,
+              isUploadPhoto: true,
+            };
+            console.log(datImage)
+            setPhoto(source);
+            dispatch(addPhotoKtp(datImage));
+          }
+        }
+      },
+    );
+  }
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "App Camera Permission",
+          message: "App needs access to your camera ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        openCamera();
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+
+  };
+
   const choosePhoto = () => {
     launchImageLibrary(
       {
@@ -30,7 +86,7 @@ const Form = ({navigation}) => {
           showMessage('Anda tidak memilih photo');
         } else {
           if (response.assets && response.assets?.length !== 0) {
-            const source = {uri: response.assets[0].uri};
+            const source = { uri: response.assets[0].uri };
             const datImage = {
               uri: response.assets[0].uri,
               type: response.assets[0].type,
@@ -64,19 +120,19 @@ const Form = ({navigation}) => {
             <Pressable
               android_ripple={{
                 color: 'rgb(224, 224, 224)',
-                borderless: true,
+                // borderless: true,
                 foreground: true,
               }}
               onPress={choosePhoto}
               style={{
-                height: 75,
-                width: 75,
+                width: 345,
+                height: 175,
                 justifyContent: 'center',
                 alignItems: 'center',
                 elevation: 4,
               }}>
               {photo ? (
-                <Image source={photo} style={styles.photoContainer} />
+                <Image source={photo} style={styles.photoKtp} />
               ) : (
                 <View style={styles.photoContainer}>
                   <IcEmptyImage />
@@ -111,11 +167,11 @@ const Form = ({navigation}) => {
             }}
           />
           <View>
-            <Text style={{width: 50, textAlign: 'center', color: '#808B97'}}>
+            <Text style={{ width: 50, textAlign: 'center', color: '#808B97' }}>
               Or
             </Text>
           </View>
-          <View style={{flex: 1, height: 1, backgroundColor: '#E2E7EC'}} />
+          <View style={{ flex: 1, height: 1, backgroundColor: '#E2E7EC' }} />
         </View>
         <View
           style={{
@@ -130,6 +186,8 @@ const Form = ({navigation}) => {
             color="#FFF1C1"
             textColor="#FCC400"
             borderRadius={20}
+            onPress={requestCameraPermission}
+
           />
         </View>
         <View
@@ -166,7 +224,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
-
+  photoKtp: {
+    width: undefined,
+    height: '100%',
+    aspectRatio: 1,
+    alignSelf: 'center',
+  },
   photoContainer: {
     width: 345,
     height: 175,
@@ -209,5 +272,5 @@ const styles = StyleSheet.create({
     color: '#020202',
     marginHorizontal: 24,
   },
-  page: {flex: 1, backgroundColor: 'white'},
+  page: { flex: 1, backgroundColor: 'white' },
 });
