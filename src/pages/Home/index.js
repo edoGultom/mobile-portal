@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {checkImageUrl, getData} from '../../utils';
-import {Gap, HomeProfile, HomeTabSection} from '../../components';
+import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { Gap, HomeProfile, HomeTabSection } from '../../components';
 import Card from '../../components/molecules/Card';
-import {FoodDummy1} from '../../assets';
-import {useDispatch, useSelector} from 'react-redux';
-import {getArticles} from '../../redux/homeSlice';
-import {BE_API_HOST} from '@env';
+import { getArticles } from '../../redux/homeSlice';
+import { getData } from '../../utils';
 
 const Home = ({navigation}) => {
   const {articles} = useSelector(state => state.homeReducer);
@@ -16,6 +14,7 @@ const Home = ({navigation}) => {
       dispatch(getArticles(resToken.value));
     });
   }, []);
+
   return (
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
       <View style={styles.page}>
@@ -26,7 +25,7 @@ const Home = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.homeContainer}>
                 <Gap width={24} />
-                {articles?.map(item => {
+                { (articles?.length >0) ? articles.map(item => {
                   return (
                     <Card
                       key={item.id}
@@ -37,7 +36,7 @@ const Home = ({navigation}) => {
                       onPress={() => navigation.navigate('CardDetail', item)}
                     />
                   );
-                })}
+                }) : (<Text>Kosong</Text>) }
               </View>
             </ScrollView>
           </View>
@@ -45,9 +44,7 @@ const Home = ({navigation}) => {
         <View style={styles.tabContainer}>
           <HomeTabSection articles={articles} />
         </View>
-        {/* <View style={styles.tabContainer}>
-          <Text>sdsds</Text>
-        </View> */}
+   
       </View>
     </ScrollView>
   );

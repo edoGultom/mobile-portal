@@ -41,6 +41,7 @@ export const getArticles = createAsyncThunk(
         },
       });
       dispatch(addLoading(false));
+      // console.log(response.data)
       return response.data.data;
     } catch (error) {
       dispatch(addLoading(false));

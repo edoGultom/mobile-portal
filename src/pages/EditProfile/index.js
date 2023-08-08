@@ -37,7 +37,6 @@ const EditProfile = ({navigation}) => {
       }
     });
     getData('token').then(resToken => {
-      console.log(resultObj);
       Axios.post(
         `${BE_API_HOST}/update-user/user?username=${userProfile.username}`,
         resultObj,

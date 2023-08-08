@@ -48,13 +48,11 @@ export const photoUploadSlice = createSlice({
 export const signUpAction = createAsyncThunk(
   'post/postRegister',
   async (data, {dispatch}) => {
-    console.log(data, 'data');
 
     await axios
       .post(`${BE_API_HOST}/user/register`, data)
       .then(res => {
         const profile = res.data.data;
-        console.log(res.data.status, 'ress');
         if (res.data.status) {
           const username = profile.username;
           let formData = new FormData();
@@ -66,6 +64,7 @@ export const signUpAction = createAsyncThunk(
 
           axios
             .post(`${BE_API_HOST}/user/login`, formData, {
+              // .post(`${BE_API_HOST}/oauth2/token`, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -74,7 +73,6 @@ export const signUpAction = createAsyncThunk(
               if (res.data.access_token) {
                 const token = `${res.data.token_type} ${res.data.access_token}`;
                 storeData('token', {value: token});
-
                 // upload foto
                 if (data.photoReducer.isUploadPhoto) {
                   const dataImgae = data.photoReducer;
@@ -85,12 +83,13 @@ export const signUpAction = createAsyncThunk(
                       headers: {
                         Authorization: token,
                         'Content-Type': 'multipart/form-data',
+                        // 'Content-Type': 'application/json'
                       },
                     })
                     .then(resUpload => {
-                      profile.profile_photo_url =
-                        `${BE_API_HOST}/lihat-file/profile?path=` +
-                        resUpload.data.path;
+                      profile.profile_photo_url = resUpload.data.data.path;
+                      console.log(profile,' ress')
+
                       storeData('userProfile', profile);
                       data.navigation.reset({
                         index: 0,

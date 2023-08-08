@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {ProfileDummy} from '../../../assets';
-import {getData} from '../../../utils';
-import {BE_API_HOST} from '@env';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ProfileDummy } from '../../../assets';
+import { getData } from '../../../utils';
+import { BE_API_HOST } from '@env';
 
 const HomeProfile = () => {
   const [photo, setPhoto] = useState(ProfileDummy);
@@ -10,12 +10,13 @@ const HomeProfile = () => {
 
   useEffect(() => {
     getData('userProfile').then(res => {
-      setPhoto({
-        uri: `${BE_API_HOST}/lihat-file/profile?path=${res.profile_photo_path}`,
-      });
+        setPhoto({
+          uri: `${BE_API_HOST}/lihat-file/profile?path=${res.profile_photo_url}`,
+        });
       setUsername(res.username);
     });
   }, []);
+
   return (
     <View style={styles.profileContainer}>
       <View>
@@ -49,5 +50,5 @@ const styles = StyleSheet.create({
     color: '#8D92A3',
     fontFamily: 'Poppins-Light',
   },
-  profile: {width: 50, height: 50, borderRadius: 8},
+  profile: { width: 50, height: 50, borderRadius: 8 },
 });
