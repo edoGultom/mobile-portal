@@ -43,7 +43,7 @@ const Kegiatan = () => {
   const {kegiatan} = useSelector(state => state.homeReducer);
   return (
     <View style={styles.containerKegiatan}>
-      {kegiatan.length > 0 ? (
+      {kegiatan ? (
         <FlatList
           data={kegiatan}
           showsVerticalScrollIndicator={false}
@@ -95,7 +95,7 @@ const Popular = () => {
   const {popular} = useSelector(state => state.homeReducer);
   return (
     <View style={styles.containerPopular}>
-      {popular.length > 0 ? (
+      {popular ? (
         <FlatList
           data={popular}
           showsVerticalScrollIndicator={false}

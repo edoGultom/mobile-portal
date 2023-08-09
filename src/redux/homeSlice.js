@@ -21,8 +21,8 @@ export const homeSlice = createSlice({
         state.info = action.payload;
       } else if (action.meta.arg.type === 'popular') {
         state.popular = action.payload;
-      } else if (action.meta.arg.type === 'recommended') {
-        state.recommended = action.payload;
+      } else if (action.meta.arg.type === 'kegiatan') {
+        state.kegiatan = action.payload;
       }
     },
   },

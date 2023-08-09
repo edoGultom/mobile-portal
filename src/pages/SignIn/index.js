@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {IlSignIn} from '../../assets';
-import {Button, Gap, Header, TextInput} from '../../components';
-import {signInAction} from '../../redux/signInSlice';
+import React, { useEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { IlSignIn } from '../../assets';
+import { Button, Gap, Header, TextInput } from '../../components';
+import { signInAction } from '../../redux/signInSlice';
 // import {API_HOST} from '../../config';
-import {getData, useFormHook} from '../../utils';
+import { getData, useFormHook } from '../../utils';
 
-const SignIn = ({navigation}) => {
+const SignIn = ({ navigation }) => {
   const dispatch = useDispatch();
 
   //grouping form menjadi satu object
@@ -24,7 +24,7 @@ const SignIn = ({navigation}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.page}>
         <Header title="Sign In" subtitle="Silahkan masuk " />
         <View style={styles.container}>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#FBFBFB',
-    paddingTop: 24,
+    paddingTop: 15,
     paddingHorizontal: 24,
     paddingVertical: 20,
     marginTop: 24,

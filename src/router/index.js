@@ -11,12 +11,13 @@ import {
   SplashScreen,
   SuccessSignUp,
   NewsDetail,
-  FormDetail,
+  FormUpload,
 } from '../pages';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {BottomNavigator} from '../components';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomNavigator } from '../components';
+import { createStackNavigator } from '@react-navigation/stack';
+import SuccessUpload from '../pages/SuccessUpload';
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
@@ -26,18 +27,18 @@ const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
-      <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
-      <Tab.Screen name="Form" component={Form} options={{headerShown: false}} />
+      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Tab.Screen name="Form" component={Form} options={{ headerShown: false }} />
 
       <Tab.Screen
         name="Notif"
         component={Notif}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );
@@ -45,53 +46,59 @@ const MainApp = () => {
 const Router = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="SignIn"
         component={SignIn}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SignUp"
         component={SignUp}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SignUpAddress"
         component={SignUpAddress}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SuccessSignUp"
         component={SuccessSignUp}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="NewsDetail"
         component={NewsDetail}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
-        options={{headerShown: false}}
-      /> 
-      <Stack.Screen
-        name="FormDetail"
-        component={FormDetail}
-        options={{headerShown: false}}
-      />
+        options={{ headerShown: false }}
+      /> */}
 
+      {/* <Stack.Screen
+        name="FormUpload"
+        component={FormUpload}
+        options={{ headerShown: false }}
+      /> */}
+
+      <Stack.Screen
+        name="SuccessUpload"
+        component={SuccessUpload}
+        options={{ headerShown: false }}
+      />
       {/* bottom Navigation */}
       <Stack.Screen
         name="MainApp"
         component={MainApp}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       {/* end bottom navigation */}
     </Stack.Navigator>

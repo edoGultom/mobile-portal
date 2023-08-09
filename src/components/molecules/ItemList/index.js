@@ -20,7 +20,7 @@ const ItemList = ({
           <>
             <View style={styles.content}>
               <Text style={styles.title}>
-                {judul?.length > 50 ? `${judul.substring(0, 50)} ...` : judul}
+                {judul?.length > 20 ? `${judul.substring(0, 20)} ...` : judul}
               </Text>
               <Text style={styles.date}>{date}</Text>
             </View>

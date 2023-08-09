@@ -14,6 +14,7 @@ import IcFormOn from './ic-form-on.svg';
 import IcNotifOn from './ic-notif-on.svg';
 import IcNotifOff from './ic-notif-off.svg';
 import IcEmptyImage from './ic-empty-image.svg';
+import IcLetter from './ic-letter.svg';
 export {
   IcBack,
   IcHomeOff,
@@ -31,4 +32,5 @@ export {
   IcNotifOn,
   IcNotifOff,
   IcEmptyImage,
+  IcLetter,
 };
