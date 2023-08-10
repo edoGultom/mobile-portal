@@ -1,41 +1,46 @@
 import Axios from 'axios';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Gap, Header, ItemList } from '../../components';
 import { IcLetter, IlSuccessSignUp } from '../../assets';
 import { BE_API_HOST } from '@env';
 import { showMessage } from 'react-native-flash-message';
 import { getData } from '../../utils';
+import { addLoading } from '../../redux/globalSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Form({ navigation }) {
-  // const id = route.params;
   const [isUsul, setIsUsul] = useState(false);
+  const [statusUsul, setStatusUsul] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      onCheckUsulan();
+      dispatch(addLoading(true))
+      getData('userProfile').then(res => {
+        getData('token').then(resToken => {
+          Axios.get(`${BE_API_HOST}/pengusulan-surat/cek-surat?userId=${res.id}`, {
+            headers: {
+              Authorization: resToken.value,
+            },
+          })
+            .then(res => {
+              dispatch(addLoading(false));
+              setIsUsul(res.data.status)
+              setStatusUsul(res.data.pesan)
+            })
+            .catch(err => {
+              console.log('Err: ', err);
+              showMessage(err?.response?.data.message, 'danger');
+
+            })
+        });
+      });
     });
+
+
   }, [navigation]);
 
-  const onCheckUsulan = () => {
-    getData('token').then(resToken =>
-      Axios.get(`${BE_API_HOST}/pengusulan-surat/cek-surat?userId=${userProfile.id}`, photoForUpload, {
-        headers: {
-          Authorization: resToken.value,
-        },
-      })
-        .then(res => {
-          console.log('success', res.data);
-          setIsUsul(res.data.status)
-        })
-        .catch(err => {
-          console.log('Err: ', err);
-          showMessage(err?.response?.data.message, 'danger');
-
-        }),
-    );
-  };
-  console.log(isUsul)
   return (
     <View style={styles.page}>
       <Header
@@ -51,12 +56,22 @@ export default function Form({ navigation }) {
         </View>
         <Gap height={12} />
         <View style={{ flex: 1 }}>
-          <View style={styles.buttonContainer}>
-            <Button
-              text="Surat Domisili"
-              onPress={() => navigation.navigate('FormUpload')}
-            />
-          </View>
+
+          {
+            isUsul ? (
+              <View style={styles.containerInfo}>
+                <Text style={styles.labelInfo}>{statusUsul}</Text>
+              </View>
+
+            ) : (
+              <View style={styles.buttonContainer}>
+                <Button
+                  text="Surat Domisili"
+                  onPress={() => navigation.navigate('FormUpload')}
+                />
+              </View>
+            )
+          }
         </View>
       </View>
     </View>
@@ -66,6 +81,19 @@ export default function Form({ navigation }) {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
+  },
+  containerInfo: {
+    width: '100%',
+    paddingHorizontal: 80,
+  },
+  labelInfo: {
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#FFF1C1',
+    color: '#E7B405',
+    borderRadius: 5,
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   container: {
     backgroundColor: '#FBFBFB',

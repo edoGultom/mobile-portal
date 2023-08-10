@@ -4,4 +4,5 @@ import IlSignUp from './SignUp.svg';
 import IlSignIn from './SignIn.svg';
 import IlLoading from './loading.json';
 import IlSuccessUpload from './SuccessUpload.svg';
-export { Logo, IlSuccessSignUp, IlSignUp, IlSignIn, IlLoading, IlSuccessUpload };
+import IlAdmin from './Admin.svg';
+export { Logo, IlSuccessSignUp, IlSignUp, IlSignIn, IlLoading, IlSuccessUpload, IlAdmin };
