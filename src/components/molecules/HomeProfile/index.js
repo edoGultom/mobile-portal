@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ProfileDummy } from '../../../assets';
 import { getData } from '../../../utils';
 import { BE_API_HOST } from '@env';
+import { COLORS, SIZES } from '../../../constants';
 
 const HomeProfile = () => {
   const [photo, setPhoto] = useState(ProfileDummy);
@@ -10,21 +11,23 @@ const HomeProfile = () => {
 
   useEffect(() => {
     getData('userProfile').then(res => {
-        setPhoto({
-          uri: `${BE_API_HOST}/lihat-file/profile?path=${res.profile_photo_url}`,
-        });
+      setPhoto({
+        uri: `${BE_API_HOST}/lihat-file/profile?path=${res.profile_photo_path}`,
+      });
       setUsername(res.username);
     });
   }, []);
-
+  console.log(photo)
   return (
     <View style={styles.profileContainer}>
       <View>
-        <Text style={styles.appName}>Welcome,</Text>
-        <Text style={styles.desc}>{username}</Text>
+        <Text style={styles.appName}>Hello {username} </Text>
+        <Text style={styles.desc}>Welcome to portal app</Text>
       </View>
 
-      <Image source={photo} style={styles.profile} />
+      <View style={styles.imageContainer}>
+        <Image source={photo} style={styles.image} resizeMode='cover' />
+      </View>
     </View>
   );
 };
@@ -50,5 +53,13 @@ const styles = StyleSheet.create({
     color: '#8D92A3',
     fontFamily: 'Poppins-Light',
   },
-  profile: { width: 50, height: 50, borderRadius: 8 },
+  image: { width: '100%', height: '100%', borderRadius: 8 },
+  imageContainer: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: SIZES.small / 1.25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
