@@ -4,27 +4,55 @@ import { getData, showMessage } from '../../utils';
 import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { IcEmptyImage } from '../../assets';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { addPhotoKtp } from '../../redux/formSlice';
-import { useDispatch } from 'react-redux';
+import { addPhotoKtp, uploadPhoto } from '../../redux/formSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { PermissionsAndroid } from 'react-native';
+import { BE_API_HOST } from '@env';
+import { addLoading } from '../../redux/globalSlice';
 
 const FormUpload = ({ navigation }) => {
   const [photo, setPhoto] = useState('');
+  const [permission, setPermission] = useState('');
+  const [userProfile, setUserProfile] = useState({});
+
+  const { photoKtpReducer } = useSelector(state => state);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      requestCameraPermission();
+    }
+  }, []);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       setPhoto('')
+      getData('userProfile').then(res => {
+        setUserProfile(res);
+      });
     });
   }, [navigation]);
 
-  const onContinue = () => {
+  const onUpload = () => {
     if (photo.length < 1) {
       showMessage('Please select a file to continue!');
     } else {
-      navigation.navigate('SuccessUpload');
+
+      getData('token').then(res => {
+        const token = res
+        const data = {
+          photoKtpReducer, //reducer upload
+          token,
+          userProfile,
+          navigation
+        };
+        dispatch(addLoading(true));
+        dispatch(uploadPhoto(data));
+      });
+
     }
   };
+
   const openCamera = () => {
     launchCamera(
       {
@@ -67,7 +95,7 @@ const FormUpload = ({ navigation }) => {
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        openCamera();
+        // openCamera();
       } else {
         showMessage('Access Camera denied');
       }
@@ -188,7 +216,7 @@ const FormUpload = ({ navigation }) => {
             color="#FFF1C1"
             textColor="#DEAC02"
             borderRadius={20}
-            onPress={requestCameraPermission}
+            onPress={openCamera}
 
           />
         </View>
@@ -200,7 +228,7 @@ const FormUpload = ({ navigation }) => {
             justifyContent: 'center',
             padding: 20,
           }}>
-          <Button text="Upload Photo" borderRadius={20} onPress={onContinue} />
+          <Button text="Upload Photo" borderRadius={20} onPress={onUpload} />
         </View>
       </View>
     </View>

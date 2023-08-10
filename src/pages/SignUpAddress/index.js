@@ -1,15 +1,15 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, ActivityIndicator} from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 // import {ScrollView} from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
-import {Button, Gap, Header, Select, TextInput} from '../../components';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Gap, Header, Select, TextInput } from '../../components';
 // import {signUpAction} from '../../redux/action';
-import {useFormHook} from '../../utils';
-import {addLoading} from '../../redux/globalSlice';
-import {IlSignUp} from '../../assets';
-import {signUpAction} from '../../redux/signUpSlice';
+import { useFormHook } from '../../utils';
+import { addLoading } from '../../redux/globalSlice';
+import { IlSignUp } from '../../assets';
+import { signUpAction } from '../../redux/signUpSlice';
 
-const SignUpAddress = ({navigation}) => {
+const SignUpAddress = ({ navigation }) => {
   const [form, setForm] = useFormHook({
     phone_number: '',
     address: '',
@@ -17,8 +17,7 @@ const SignUpAddress = ({navigation}) => {
   });
 
   // destructering reducer dengan mengeassign ke masing masing reducer
-  const {signUpReducer, photoReducer} = useSelector(state => state);
-  console.log(photoReducer, 'photo');
+  const { signUpReducer, photoReducer } = useSelector(state => state);
   const dispatch = useDispatch();
   const onSubmit = () => {
     const data = {
@@ -32,7 +31,7 @@ const SignUpAddress = ({navigation}) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.page}>
         <Header
           title="Address"

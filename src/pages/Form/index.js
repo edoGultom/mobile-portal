@@ -1,11 +1,41 @@
 import Axios from 'axios';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Gap, Header, ItemList } from '../../components';
 import { IcLetter, IlSuccessSignUp } from '../../assets';
+import { BE_API_HOST } from '@env';
+import { showMessage } from 'react-native-flash-message';
+import { getData } from '../../utils';
 
-export default function Form({ route, navigation }) {
+export default function Form({ navigation }) {
   // const id = route.params;
+  const [isUsul, setIsUsul] = useState(false);
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      onCheckUsulan();
+    });
+  }, [navigation]);
+
+  const onCheckUsulan = () => {
+    getData('token').then(resToken =>
+      Axios.get(`${BE_API_HOST}/pengusulan-surat/cek-surat?userId=${userProfile.id}`, photoForUpload, {
+        headers: {
+          Authorization: resToken.value,
+        },
+      })
+        .then(res => {
+          console.log('success', res.data);
+          setIsUsul(res.data.status)
+        })
+        .catch(err => {
+          console.log('Err: ', err);
+          showMessage(err?.response?.data.message, 'danger');
+
+        }),
+    );
+  };
+  console.log(isUsul)
   return (
     <View style={styles.page}>
       <Header
@@ -24,7 +54,7 @@ export default function Form({ route, navigation }) {
           <View style={styles.buttonContainer}>
             <Button
               text="Surat Domisili"
-              onPress={() => navigation.replace('FormUpload')}
+              onPress={() => navigation.navigate('FormUpload')}
             />
           </View>
         </View>

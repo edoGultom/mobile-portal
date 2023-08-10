@@ -46,7 +46,7 @@ const MainApp = () => {
 const Router = () => {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
+      <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
         options={{ headerShown: false }}
@@ -81,13 +81,17 @@ const Router = () => {
         name="EditProfile"
         component={EditProfile}
         options={{ headerShown: false }}
-      /> */}
-
+      />
       {/* <Stack.Screen
+        name="Form"
+        component={Form}
+        options={{ headerShown: false }}
+      /> */}
+      <Stack.Screen
         name="FormUpload"
         component={FormUpload}
         options={{ headerShown: false }}
-      /> */}
+      />
 
       <Stack.Screen
         name="SuccessUpload"
