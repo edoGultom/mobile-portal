@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
   },
   containerInfo: {
     width: '100%',
-    paddingHorizontal: 80,
   },
   labelInfo: {
     justifyContent: 'center',

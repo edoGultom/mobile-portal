@@ -8,18 +8,13 @@ const Profile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
-    getData('userProfile').then(res => {
-      navigation.addListener('focus', () => {
-        updateUserProfile();
+    navigation.addListener('focus', () => {
+      getData('userProfile').then(res => {
+        setUserProfile(res);
       });
     });
   }, [navigation]);
 
-  const updateUserProfile = () => {
-    getData('userProfile').then(res => {
-      setUserProfile(res);
-    });
-  };
   return (
     <View style={styles.page}>
       <View style={styles.profileDetail}>
@@ -27,7 +22,7 @@ const Profile = ({ navigation }) => {
           <View style={styles.borderPhoto}>
             <Image
               source={{
-                uri: `${BE_API_HOST}/lihat-file/profile?path=${userProfile.profile_photo_url}`,
+                uri: `${BE_API_HOST}/lihat-file/profile?path=${userProfile.profile_photo_path}`,
               }}
               style={styles.photoContainer}
             />
