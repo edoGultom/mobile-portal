@@ -6,8 +6,8 @@ import Card from '../../components/molecules/Card';
 import { getArticles } from '../../redux/homeSlice';
 import { getData } from '../../utils';
 
-const Home = ({navigation}) => {
-  const {articles} = useSelector(state => state.homeReducer);
+const Home = ({ navigation }) => {
+  const { articles } = useSelector(state => state.homeReducer);
   const dispatch = useDispatch();
   useEffect(() => {
     getData('token').then(resToken => {
@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.page}>
         <HomeProfile />
         <View style={styles.container}>
@@ -25,18 +25,18 @@ const Home = ({navigation}) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.homeContainer}>
                 <Gap width={24} />
-                { (articles?.length >0) ? articles.map(item => {
+                {(articles?.length > 0) ? articles.map(item => {
                   return (
                     <Card
                       key={item.id}
-                      image={{uri: item.picturePathThumb}}
+                      image={{ uri: item.picturePathThumb }}
                       judul={item.judul}
                       kategori={item.kategori}
                       isi={item.isi}
-                      onPress={() => navigation.navigate('CardDetail', item)}
+                      onPress={() => navigation.navigate('NewsDetail', item)}
                     />
                   );
-                }) : (<Text>Kosong</Text>) }
+                }) : (<Text>Kosong</Text>)}
               </View>
             </ScrollView>
           </View>
@@ -44,7 +44,7 @@ const Home = ({navigation}) => {
         <View style={styles.tabContainer}>
           <HomeTabSection articles={articles} />
         </View>
-   
+
       </View>
     </ScrollView>
   );
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: '#020202',
     marginHorizontal: 24,
   },
-  page: {flex: 1},
-  homeContainer: {flexDirection: 'row', marginVertical: 10},
-  tabContainer: {flex: 1, marginVertical: 20},
+  page: { flex: 1 },
+  homeContainer: { flexDirection: 'row', marginVertical: 10 },
+  tabContainer: { flex: 1, marginVertical: 20 },
 });
