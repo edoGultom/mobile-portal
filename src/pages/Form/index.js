@@ -1,13 +1,13 @@
-import Axios from 'axios';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Button, Gap, Header, ItemList } from '../../components';
-import { IcLetter, IlSuccessSignUp } from '../../assets';
 import { BE_API_HOST } from '@env';
+import Axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { getData } from '../../utils';
-import { addLoading } from '../../redux/globalSlice';
 import { useDispatch } from 'react-redux';
+import { IcLetter } from '../../assets';
+import { Button, Gap, Header } from '../../components';
+import { addLoading } from '../../redux/globalSlice';
+import { getData } from '../../utils';
 
 export default function Form({ navigation }) {
   const [isUsul, setIsUsul] = useState(false);
@@ -46,9 +46,7 @@ export default function Form({ navigation }) {
       <Header
         title="Pengusulan Surat"
         subtitle="Pilih jenis surat yang akan kamu usulkan"
-        onBack={() => {
-          navigation.goBack();
-        }}
+
       />
       <View style={styles.container}>
         <View style={{ flex: 3 }}>

@@ -17,7 +17,6 @@ const HomeProfile = () => {
       setUsername(res.username);
     });
   }, []);
-  console.log(photo)
   return (
     <View style={styles.profileContainer}>
       <View>

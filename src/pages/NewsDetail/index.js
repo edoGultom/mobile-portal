@@ -12,6 +12,7 @@ import { Button, Counter, Number, Rating } from '../../components';
 import { getData } from '../../utils';
 import RenderHtml from 'react-native-render-html';
 import { useWindowDimensions } from 'react-native';
+import { COLORS, SIZES } from '../../constants';
 
 const NewsDetail = ({ navigation, route }) => {
   const { judul, picturePath, isi, tanggal_posting } = route.params;
@@ -33,11 +34,14 @@ const NewsDetail = ({ navigation, route }) => {
   return (
     <View style={styles.page}>
       <ImageBackground source={{ uri: picturePath }} style={styles.cover}>
-        <TouchableOpacity
-          style={styles.back}
-          onPress={() => navigation.goBack()}>
-          <IcBackWhite />
-        </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.back}
+            onPress={() => navigation.goBack()}>
+            <IcBackWhite />
+          </TouchableOpacity>
+        </View>
+
       </ImageBackground>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -66,10 +70,20 @@ const styles = StyleSheet.create({
   page: { flex: 1 },
   cover: { height: 330, paddingTop: 26, paddingLeft: 22 },
   back: {
-    width: 30,
-    height: 30,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F3F4F8',
+    borderRadius: SIZES.small / 1.25,
+  },
+  btnContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.small / 1.25,
+    justifyContent: "center",
+    alignItems: "center",
   },
   content: {
     backgroundColor: '#FBFBFB',

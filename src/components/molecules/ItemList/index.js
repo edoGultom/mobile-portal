@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const ItemList = ({
   image,
@@ -20,7 +20,7 @@ const ItemList = ({
           <>
             <View style={styles.content}>
               <Text style={styles.title}>
-                {judul?.length > 20 ? `${judul.substring(0, 20)} ...` : judul}
+                {judul?.length > 23 ? `${judul.substring(0, 23)} ...` : judul}
               </Text>
               <Text style={styles.date}>{date}</Text>
             </View>
@@ -63,7 +63,7 @@ const ItemList = ({
   return (
     <Pressable
       onPress={onPress}
-      style={({pressed}) => [
+      style={({ pressed }) => [
         {
           backgroundColor: pressed ? 'rgb(224, 224, 224)' : 'white',
         },
@@ -86,11 +86,14 @@ const styles = StyleSheet.create({
   wrapperCustom: {
     borderRadius: 8,
     padding: 6,
+    marginVertical: 8
   },
   container: {
     flexDirection: 'row',
     paddingVertical: 8,
+    paddingHorizontal: 12,
     alignItems: 'center',
+
   },
   image: {
     width: 60,

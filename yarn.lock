@@ -5993,9 +5993,9 @@ react-native-flipper@^0.207.0:
   resolved "https://registry.npmjs.org/react-native-flipper/-/react-native-flipper-0.207.0.tgz"
   integrity sha512-KG+uy74nCRHiK7t/sxn0oKlJTy7SkaJPnWK8WDaOBv98qRWFPdSlUtxki0guoPjmO7gAV+nZsiGDd+98oZSohg==
 
-react-native-gesture-handler@^2.12.0:
+react-native-gesture-handler@^2.12.1:
   version "2.12.1"
-  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.12.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.12.1.tgz#f11a99fb95169810c6886fad5efa01a17fd81660"
   integrity sha512-deqh36bw82CFUV9EC4tTo2PP1i9HfCOORGS3Zmv71UYhEZEHkzZv18IZNPB+2Awzj45vLIidZxGYGFxHlDSQ5A==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
@@ -6006,7 +6006,7 @@ react-native-gesture-handler@^2.12.0:
 
 react-native-head-tab-view@^4.0.0-rc.13:
   version "4.0.0-rc.13"
-  resolved "https://registry.npmjs.org/react-native-head-tab-view/-/react-native-head-tab-view-4.0.0-rc.13.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-head-tab-view/-/react-native-head-tab-view-4.0.0-rc.13.tgz#bf33216b897d0ffd0b7422d752b186df35f94304"
   integrity sha512-wal0cOy63BI/vjsxFRruqBm5B8QaDlOa4MX2CnuetMMbGR4522q0mtIya3EE0nO7GShwKk9TD1JvBvvpZa71AQ==
 
 react-native-image-picker@^5.6.0:
@@ -6089,12 +6089,12 @@ react-native-svg@^13.10.0:
 
 react-native-tab-view-collapsible-header@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.npmjs.org/react-native-tab-view-collapsible-header/-/react-native-tab-view-collapsible-header-2.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view-collapsible-header/-/react-native-tab-view-collapsible-header-2.0.1.tgz#95232173b4b63414c7779cbf56e177a0c92d0651"
   integrity sha512-yvRya4/DC0DmrdLRKNmdPObSIh5X03Ogm4iYNpa56SSwvdxIhSvewe2IlG4q8rEeCXszQln84uWYSYIiyYuUaQ==
 
 react-native-tab-view@^3.5.2:
   version "3.5.2"
-  resolved "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz#2789b8af6148b16835869566bf13dc3b0e6c1b46"
   integrity sha512-nE5WqjbeEPsWQx4mtz81QGVvgHRhujTNIIZiMCx3Bj6CBFDafbk7XZp9ocmtzXUQaZ4bhtVS43R4FIiR4LboJw==
   dependencies:
     use-latest-callback "^0.1.5"

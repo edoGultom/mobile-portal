@@ -6,9 +6,9 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {IcBack} from '../../../assets';
+import { IcBack } from '../../../assets';
 
-const Header = ({title, subtitle, onBack}) => {
+const Header = ({ title, subtitle, onBack }) => {
   // const {title, subtitle, onBack} = props;
   return (
     <View style={styles.container}>

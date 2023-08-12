@@ -1,12 +1,11 @@
+import { BE_API_HOST } from '@env';
 import Axios from 'axios';
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Select, TextInput} from '../../components';
-import {API_HOST} from '../../config';
-import {getData, showMessage, storeData, useFormHook} from '../../utils';
-import {BE_API_HOST} from '@env';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Button, Gap, Header, Select, TextInput } from '../../components';
+import { getData, showMessage, storeData, useFormHook } from '../../utils';
 
-const EditProfile = ({navigation}) => {
+const EditProfile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState({});
 
   const [form, setForm] = useFormHook({
@@ -49,13 +48,13 @@ const EditProfile = ({navigation}) => {
         .then(res => {
           showMessage('Update Success', 'success');
           storeData('userProfile', res.data.data).then(() => {
-            navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+            navigation.reset({ index: 0, routes: [{ name: 'MainApp' }] });
           });
         })
         .catch(err => {
           showMessage(
             `${err?.response?.data?.message} on Update Profile API` ||
-              'Terjadi kesalahan di API Update Profile',
+            'Terjadi kesalahan di API Update Profile',
           );
         });
     });
@@ -114,8 +113,8 @@ const EditProfile = ({navigation}) => {
 export default EditProfile;
 
 const styles = StyleSheet.create({
-  scroll: {flexGrow: 1},
-  page: {flex: 1},
+  scroll: { flexGrow: 1 },
+  page: { flex: 1 },
   container: {
     backgroundColor: 'white',
     paddingHorizontal: 24,

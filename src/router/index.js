@@ -18,6 +18,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigator } from '../components';
 import { createStackNavigator } from '@react-navigation/stack';
 import SuccessUpload from '../pages/SuccessUpload';
+import { ScrollView } from 'react-native';
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
