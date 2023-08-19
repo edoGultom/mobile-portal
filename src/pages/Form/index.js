@@ -56,18 +56,19 @@ export default function Form({ navigation }) {
         <View style={{ flex: 1 }}>
 
           {
-            isUsul ? (
-              <View style={styles.containerInfo}>
-                <Text style={styles.labelInfo}>{statusUsul}</Text>
-              </View>
-
-            ) : (
+            !isUsul ? (
               <View style={styles.buttonContainer}>
                 <Button
                   text="Surat Domisili"
                   onPress={() => navigation.navigate('FormUpload')}
                 />
               </View>
+
+            ) : (
+              <View style={styles.containerInfo}>
+                <Text style={styles.labelInfo}>{statusUsul}</Text>
+              </View>
+
             )
           }
         </View>

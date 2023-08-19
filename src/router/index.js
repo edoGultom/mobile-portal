@@ -1,24 +1,25 @@
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { BottomNavigator } from '../components';
 import {
+  Pengaduan,
   EditProfile,
   Form,
+  FormUpload,
   Home,
+  NewsDetail,
   Notif,
   Profile,
   SignIn,
   SignUp,
   SignUpAddress,
   SplashScreen,
+  FormAduan,
   SuccessSignUp,
-  NewsDetail,
-  FormUpload,
 } from '../pages';
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigator } from '../components';
-import { createStackNavigator } from '@react-navigation/stack';
 import SuccessUpload from '../pages/SuccessUpload';
-import { ScrollView } from 'react-native';
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
@@ -28,13 +29,25 @@ const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
-      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Tab.Screen name="Form" component={Form} options={{ headerShown: false }} />
-
+      {/* <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Form"
+        component={Form}
+        options={{ headerShown: false }}
+      />
       <Tab.Screen
         name="Notif"
         component={Notif}
         options={{ headerShown: false }}
+      /> */}
+      <Tab.Screen
+        name="Pengaduan"
+        component={Pengaduan}
+        options={{ headerShown: false, tabBarHideOnKeyboard: true }}
       />
       <Tab.Screen
         name="Profile"
@@ -83,14 +96,15 @@ const Router = () => {
         component={EditProfile}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Form"
-        component={Form}
-        options={{ headerShown: false }}
-      /> */}
+
       <Stack.Screen
         name="FormUpload"
         component={FormUpload}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="FormAduan"
+        component={FormAduan}
         options={{ headerShown: false }}
       />
 

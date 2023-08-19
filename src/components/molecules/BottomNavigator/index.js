@@ -1,6 +1,8 @@
 import React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import {
+  IcChatOff,
+  IcChatOn,
   IcFormOff,
   IcFormOn,
   IcHomeOff,
@@ -11,7 +13,7 @@ import {
   IcProfileOn,
 } from '../../../assets';
 
-const Icon = ({label, focused}) => {
+const Icon = ({ label, focused }) => {
   switch (label) {
     case 'Home':
       return focused ? <IcHomeOn /> : <IcHomeOff />;
@@ -19,23 +21,25 @@ const Icon = ({label, focused}) => {
       return focused ? <IcFormOn /> : <IcFormOff />;
     case 'Notif':
       return focused ? <IcNotifOn /> : <IcNotifOff />;
+    case 'Pengaduan':
+      return focused ? <IcChatOn /> : <IcChatOff />;
     case 'Profile':
       return focused ? <IcProfileOn /> : <IcProfileOff />;
     default:
       return <IcFormOn />;
   }
 };
-const BottomNavigator = ({state, descriptors, navigation}) => {
+const BottomNavigator = ({ state, descriptors, navigation }) => {
   return (
     <View style={styles.container}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
 
@@ -48,7 +52,7 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
 
           if (!isFocused && !event.defaultPrevented) {
             // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({name: route.name, merge: true});
+            navigation.navigate({ name: route.name, merge: true });
           }
         };
 
@@ -63,7 +67,7 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
           <Pressable
             key={index}
             accessibilityRole="button"
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
@@ -86,5 +90,7 @@ const styles = StyleSheet.create({
     paddingBottom: 13,
     paddingHorizontal: 50,
     justifyContent: 'space-between',
+    // backgroundColor: 'red'
+    elevation: 5
   },
 });

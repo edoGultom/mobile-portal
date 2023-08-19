@@ -1,7 +1,7 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {addLoading} from './globalSlice';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { addLoading } from './globalSlice';
 import axios from 'axios';
-import {BE_API_HOST} from '@env';
+import { BE_API_HOST } from '@env';
 
 export const homeSlice = createSlice({
   name: 'homeReducer',
@@ -13,10 +13,10 @@ export const homeSlice = createSlice({
     recommended: [],
   },
   extraReducers: {
-    ['home/getArticles/fulfilled']: (state, action) => {
+    ['get/getArticles/fulfilled']: (state, action) => {
       state.articles = action.payload;
     },
-    ['home/getArticlesByType/fulfilled']: (state, action) => {
+    ['get/getArticlesByType/fulfilled']: (state, action) => {
       if (action.meta.arg.type === 'news_update') {
         state.info = action.payload;
       } else if (action.meta.arg.type === 'popular') {
@@ -29,8 +29,8 @@ export const homeSlice = createSlice({
 });
 
 export const getArticles = createAsyncThunk(
-  'home/getArticles',
-  async (arg, {dispatch}) => {
+  'get/getArticles',
+  async (arg, { dispatch }) => {
     const token = `${arg}`;
     try {
       dispatch(addLoading(true));
@@ -51,9 +51,9 @@ export const getArticles = createAsyncThunk(
 );
 
 export const getArticlesByType = createAsyncThunk(
-  'home/getArticlesByType',
-  async (arg, {dispatch}) => {
-    const {token, type} = arg;
+  'get/getArticlesByType',
+  async (arg, { dispatch }) => {
+    const { token, type } = arg;
     try {
       dispatch(addLoading(true));
       const response = await axios.get(

@@ -13,9 +13,19 @@ const ItemList = ({
 }) => {
   const renderContent = () => {
     switch (type) {
-      case 'popular':
+      case 'pengaduan':
+        return (
+          <>
+            <View style={styles.content}>
+              <Text style={styles.title}>
+                {judul?.length > 23 ? `${judul.substring(0, 23)} ...` : judul}
+              </Text>
+              <Text style={styles.date}>{date}</Text>
+            </View>
+            <Text>{items.status}</Text>
+          </>
+        );
       case 'kegiatan':
-        //item list product seperti di home page
         return (
           <>
             <View style={styles.content}>
@@ -28,25 +38,20 @@ const ItemList = ({
           </>
         );
 
-      // case 'past_orders':
-      //   //item past orders di order tab section
-      //   const formattedDate = new Date(date).toDateString();
-      //   return (
-      //     <>
-      //       <View style={styles.content}>
-      //         <Text style={styles.title}>{judul}</Text>
-      //         <View style={styles.row}>
-      //           <Text style={styles.price}>{items} items</Text>
-      //           <View style={styles.dot} />
-      //           <Text>Number</Text>
-      //         </View>
-      //       </View>
-      //       <View>
-      //         <Text style={styles.date}>{formattedDate}</Text>
-      //         <Text style={styles.status(status)}>{status}</Text>
-      //       </View>
-      //     </>
-      //   );
+      case 'notification':
+        return (
+          <>
+            <View style={styles.content}>
+              <Text style={styles.title}>{judul}</Text>
+              <View style={styles.row}>
+                <Text style={styles.price}>{date}</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={styles.status(status)}>{status}</Text>
+            </View>
+          </>
+        );
       default:
         return (
           <>
@@ -73,7 +78,7 @@ const ItemList = ({
         styles.wrapperCustom,
       ]}>
       <View style={styles.container}>
-        <Image source={image} style={styles.image} />
+        {/* <Image source={image} style={styles.image} /> */}
         {renderContent()}
       </View>
     </Pressable>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   status: status => ({
     fontSize: 10,
     fontFamily: 'Poppins-Regular',
-    color: status === 'CANCELLED' ? '#D9435E' : '#1ABC9C',
+    color: status === 'Ditolak' ? '#D9435E' : '#1ABC9C',
   }),
   row: {
     flexDirection: 'row',

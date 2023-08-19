@@ -10,6 +10,8 @@ import SignUpAddress from './SignUpAddress';
 import SuccessSignUp from './SuccessSignUp';
 import EditProfile from './EditProfile';
 import NewsDetail from './NewsDetail';
+import Pengaduan from './Pengaduan';
+import FormAduan from './FormAduan';
 
 export {
   SplashScreen,
@@ -24,4 +26,6 @@ export {
   SuccessSignUp,
   EditProfile,
   NewsDetail,
+  Pengaduan,
+  FormAduan
 };

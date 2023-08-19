@@ -7,6 +7,9 @@ import Card from './Card';
 import HomeProfile from './HomeProfile';
 import HomeTabSection from './HomeTabSection';
 import ItemList from './ItemList';
+import Fab from './Fab';
+import PengaduanForm from './PengaduanForm';
+import ModalShow from './ModalShow';
 
 export {
   Header,
@@ -18,4 +21,7 @@ export {
   HomeProfile,
   HomeTabSection,
   ItemList,
+  Fab,
+  PengaduanForm,
+  ModalShow,
 };

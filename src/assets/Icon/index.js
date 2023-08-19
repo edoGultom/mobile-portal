@@ -16,6 +16,10 @@ import IcNotifOff from './ic-notif-off.svg';
 import IcEmptyImage from './ic-empty-image.svg';
 import IcLetter from './ic-letter.svg';
 import IcSearch from './ic-search.svg';
+import IcChatOn from './ic-chat-on.svg';
+import IcChatOff from './ic-chat-off.svg';
+import IcPlusOn from './ic-plus-on.svg';
+
 export {
   IcBack,
   IcHomeOff,
@@ -31,8 +35,11 @@ export {
   IcBtnPlus,
   IcSearch,
   IcNext,
+  IcPlusOn,
   IcNotifOn,
   IcNotifOff,
   IcEmptyImage,
   IcLetter,
+  IcChatOn,
+  IcChatOff,
 };
