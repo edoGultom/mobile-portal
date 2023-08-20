@@ -11,6 +11,8 @@ import {
   IcNotifOn,
   IcProfileOff,
   IcProfileOn,
+  IcReportOff,
+  IcReportOn,
 } from '../../../assets';
 
 const Icon = ({ label, focused }) => {
@@ -22,7 +24,7 @@ const Icon = ({ label, focused }) => {
     case 'Notif':
       return focused ? <IcNotifOn /> : <IcNotifOff />;
     case 'Pengaduan':
-      return focused ? <IcChatOn /> : <IcChatOff />;
+      return focused ? <IcReportOn /> : <IcReportOff />;
     case 'Profile':
       return focused ? <IcProfileOn /> : <IcProfileOff />;
     default:

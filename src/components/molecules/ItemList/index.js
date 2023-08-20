@@ -40,6 +40,18 @@ const ItemList = ({
             <Text>{kategori}</Text>
           </>
         );
+      case 'popular':
+        return (
+          <>
+            <View style={styles.content}>
+              <Text style={styles.title}>
+                {judul?.length > 23 ? `${judul.substring(0, 23)} ...` : judul}
+              </Text>
+              <Text style={styles.date}>{date}</Text>
+            </View>
+            <Text>{kategori}</Text>
+          </>
+        );
 
       case 'notification':
         return (

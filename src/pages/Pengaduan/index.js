@@ -167,7 +167,7 @@ const Pengaduan = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite, }}>
       <Header
-        title="List Pengaduan "
+        title="Pengaduan"
         subtitle="Silahkan tambah pengaduan Anda disini"
       />
       <ScrollView index={1} showsVerticalScrollIndicator={false}>
@@ -186,7 +186,6 @@ const Pengaduan = ({ navigation }) => {
                       kategori={item.isi}
                       date={item.tgl_pengaduan}
                       items={item}
-                      // image={{ uri: item.picturePathThumb }}
                       onPress={() => {
                         setModalDetail(!isModalDetail)
                         setSelected(item)
@@ -203,7 +202,6 @@ const Pengaduan = ({ navigation }) => {
                 <Text style={{ justifyContent: 'center', alignSelf: 'center' }}>Data Tidak Ditemukan</Text>
               )
           }
-
         </View>
       </ScrollView>
       <Fab
@@ -277,7 +275,7 @@ const styles = StyleSheet.create({
 
   page: {
     flex: 1,
-
+    marginTop: 10
   },
   floatinBtn: {
     position: 'absolute',

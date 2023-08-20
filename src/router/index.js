@@ -29,7 +29,7 @@ const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
@@ -40,14 +40,14 @@ const MainApp = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Notif"
-        component={Notif}
-        options={{ headerShown: false }}
-      /> */}
-      <Tab.Screen
         name="Pengaduan"
         component={Pengaduan}
         options={{ headerShown: false, tabBarHideOnKeyboard: true }}
+      />
+      <Tab.Screen
+        name="Notif"
+        component={Notif}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Profile"

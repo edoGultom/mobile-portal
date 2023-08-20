@@ -27,6 +27,7 @@ const Kegiatan = () => {
       <View style={styles.containerKegiatan}>
         {kegiatan ? (
           <FlatList
+            nestedScrollEnabled={true}
             data={kegiatan}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
@@ -81,6 +82,7 @@ const Popular = () => {
       <View style={styles.containerPopular}>
         {popular ? (
           <FlatList
+            nestedScrollEnabled={true}
             data={popular}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
@@ -214,7 +216,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   container: {
-    marginTop: 20,
+    marginTop: 16,
   },
   header: {
     flexDirection: 'column',

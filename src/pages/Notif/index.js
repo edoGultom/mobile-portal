@@ -1,4 +1,4 @@
-const { View, Text, FlatList } = require('react-native');
+const { View, Text, FlatList, ScrollView, SafeAreaView } = require('react-native');
 import React, { useEffect, useState } from 'react';
 import { getData, showMessage } from '../../utils';
 import { useDispatch } from 'react-redux';
@@ -6,7 +6,7 @@ import { addLoading } from '../../redux/globalSlice';
 import { BE_API_HOST } from '@env';
 import Axios from 'axios';
 import { Header, ItemList } from '../../components';
-import { SIZES } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 
 const Notif = ({ navigation }) => {
   const [allData, setAllData] = useState({});
@@ -41,40 +41,44 @@ const Notif = ({ navigation }) => {
         title="Notification"
         subtitle="Informasi status pengurusan surat"
       />
-      {allData.status ? (
-        <FlatList
-          data={allData.data}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <ItemList
-              key={item.id}
-              type="notification"
-              judul={item.jenis_surat}
-              date={item.tanggal}
-              status={item.status}
-              onPress={() => navigation.navigate('NewsDetail', item)}
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite, }}>
+        <ScrollView >
+          {allData.status ? (
+            <FlatList
+              data={allData.data}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <ItemList
+                  key={item.id}
+                  type="notification"
+                  judul={item.jenis_surat}
+                  date={item.tanggal}
+                  status={item.status}
+                  onPress={() => navigation.navigate('NewsDetail', item)}
+                />
+              )}
+              keyExtractor={item => item.id}
+              contentContainerStyle={{ columnGap: SIZES.medium }}
             />
+          ) : (
+            <View
+              style={{
+                flex: 3,
+                alignContent: 'center',
+                alignSelf: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#8D92A3',
+                  fontSize: 11,
+                }}>
+                {allData.pesan}
+              </Text>
+            </View>
           )}
-          keyExtractor={item => item.id}
-          contentContainerStyle={{ columnGap: SIZES.medium }}
-        />
-      ) : (
-        <View
-          style={{
-            flex: 3,
-            alignContent: 'center',
-            alignSelf: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              color: '#8D92A3',
-              fontSize: 11,
-            }}>
-            {allData.pesan}
-          </Text>
-        </View>
-      )}
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

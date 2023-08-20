@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FBFBFB',
     paddingTop: 24,
     paddingVertical: 20,
-    marginTop: 24,
+    marginTop: 10,
     flex: 3,
   },
   title: {

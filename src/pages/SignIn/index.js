@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#FBFBFB',
-    paddingTop: 15,
+    paddingTop: 5,
     paddingHorizontal: 24,
     paddingVertical: 20,
-    marginTop: 24,
+    marginTop: 10,
     flex: 1,
   },
 });

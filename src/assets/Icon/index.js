@@ -19,6 +19,8 @@ import IcSearch from './ic-search.svg';
 import IcChatOn from './ic-chat-on.svg';
 import IcChatOff from './ic-chat-off.svg';
 import IcPlusOn from './ic-plus-on.svg';
+import IcReportOff from './ic-report-off.svg';
+import IcReportOn from './ic-report-on.svg';
 
 export {
   IcBack,
@@ -42,4 +44,6 @@ export {
   IcLetter,
   IcChatOn,
   IcChatOff,
+  IcReportOff,
+  IcReportOn
 };
