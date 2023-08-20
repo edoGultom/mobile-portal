@@ -3,8 +3,6 @@ import { StyleSheet, View, Text } from 'react-native';
 import Modal from "react-native-modal";
 
 export default function ModalShow({ show, setModal, children }) {
-    // console.log(children);
-    // console.log(props.show)
     const toggleModal = () => {
         setModal(!show);
     };

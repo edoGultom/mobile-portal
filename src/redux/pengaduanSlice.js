@@ -9,12 +9,13 @@ export const pengaduanAction = createAsyncThunk(
   'post/postPengaduan',
   async (obj, { dispatch }) => {
     dispatch(addLoading(true));
-    const { form, token } = obj;
+    const { filePengaduan, form, token } = obj;
     const tokenApi = `${token.value}`;
 
     let formData = new FormData();
     formData.append('subjek', form.subjek);
     formData.append('isi', form.isi);
+    formData.append('file', form.file);
 
     await axios
       .post(`${BE_API_HOST}/pengaduan/tambah`, formData, {

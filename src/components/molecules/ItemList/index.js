@@ -18,11 +18,14 @@ const ItemList = ({
           <>
             <View style={styles.content}>
               <Text style={styles.title}>
-                {judul?.length > 23 ? `${judul.substring(0, 23)} ...` : judul}
+                {judul?.length > 35 ? `${judul.substring(0, 35)} ...` : judul}
               </Text>
+              <Text style={styles.date}> {items.isi?.length > 35 ? `${items.isi.substring(0, 35)} ...` : items.isi}</Text>
+            </View>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ color: items.status === 'Tolak' ? '#D9435E' : '#1ABC9C' }}>{items.status}</Text>
               <Text style={styles.date}>{date}</Text>
             </View>
-            <Text>{items.status}</Text>
           </>
         );
       case 'kegiatan':
