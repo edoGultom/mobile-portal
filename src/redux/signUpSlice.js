@@ -1,8 +1,8 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {showMessage, storeData} from '../utils';
-import {addLoading} from './globalSlice';
-import {BE_API_HOST} from '@env';
+import { showMessage, storeData } from '../utils';
+import { addLoading } from './globalSlice';
+import { BE_API_HOST } from '@env';
 
 export const signUpSlice = createSlice({
   name: 'signUpReducer',
@@ -47,7 +47,7 @@ export const photoUploadSlice = createSlice({
 
 export const signUpAction = createAsyncThunk(
   'post/postRegister',
-  async (data, {dispatch}) => {
+  async (data, { dispatch }) => {
 
     await axios
       .post(`${BE_API_HOST}/user/register`, data)
@@ -72,7 +72,7 @@ export const signUpAction = createAsyncThunk(
             .then(res => {
               if (res.data.access_token) {
                 const token = `${res.data.token_type} ${res.data.access_token}`;
-                storeData('token', {value: token});
+                storeData('token', { value: token });
                 // upload foto
                 if (data.photoReducer.isUploadPhoto) {
                   const dataImgae = data.photoReducer;
@@ -83,17 +83,16 @@ export const signUpAction = createAsyncThunk(
                       headers: {
                         Authorization: token,
                         'Content-Type': 'multipart/form-data',
-                        // 'Content-Type': 'application/json'
                       },
                     })
                     .then(resUpload => {
                       profile.profile_photo_url = resUpload.data.data.path;
-                      console.log(profile,' ress')
+                      console.log(profile, ' ress')
 
                       storeData('userProfile', profile);
                       data.navigation.reset({
                         index: 0,
-                        routes: [{name: 'SuccessSignUp'}],
+                        routes: [{ name: 'SuccessSignUp' }],
                       });
                     })
                     .catch(err => {
@@ -105,7 +104,7 @@ export const signUpAction = createAsyncThunk(
                   storeData('userProfile', profile);
                   data.navigation.reset({
                     index: 0,
-                    routes: [{name: 'SuccessSignUp'}],
+                    routes: [{ name: 'SuccessSignUp' }],
                   });
                 }
                 // tutup upload foto
@@ -130,5 +129,5 @@ export const signUpAction = createAsyncThunk(
   },
 );
 
-export const {addRegister} = signUpSlice.actions;
-export const {addPhoto} = photoUploadSlice.actions;
+export const { addRegister } = signUpSlice.actions;
+export const { addPhoto } = photoUploadSlice.actions;

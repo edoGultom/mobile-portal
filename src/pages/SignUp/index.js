@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   Pressable,
@@ -7,20 +7,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import {Button, Gap, Header, TextInput} from '../../components';
-import {showMessage, useFormHook} from '../../utils';
-import {useDispatch, useSelector} from 'react-redux';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {addPhoto, addRegister} from '../../redux/signUpSlice';
+import { Button, Gap, Header, TextInput } from '../../components';
+import { showMessage, useFormHook } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { addPhoto, addRegister } from '../../redux/signUpSlice';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
   const [form, setForm] = useFormHook({
     name: '',
     username: '',
     email: '',
     password: '',
   });
-  const {name, email, password} = useSelector(state => state.signUpReducer);
+  const { name, email, password } = useSelector(state => state.signUpReducer);
   const [photo, setPhoto] = useState('');
 
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const SignUp = ({navigation}) => {
           showMessage('Anda tidak memilih photo');
         } else {
           if (response.assets && response.assets?.length !== 0) {
-            const source = {uri: response.assets[0].uri};
+            const source = { uri: response.assets[0].uri };
             const datImage = {
               uri: response.assets[0].uri,
               type: response.assets[0].type,
@@ -58,7 +58,7 @@ const SignUp = ({navigation}) => {
     );
   };
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={styles.page}>
         <Header
           title="Sign Up"
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingTop: 26,
     paddingHorizontal: 24,
     paddingVertical: 26,
-    marginTop: 24,
+    marginTop: 10,
     flex: 1,
   },
   addPhoto: {

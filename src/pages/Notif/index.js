@@ -42,42 +42,40 @@ const Notif = ({ navigation }) => {
         subtitle="Informasi status pengurusan surat"
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite, }}>
-        <ScrollView >
-          {allData.status ? (
-            <FlatList
-              data={allData.data}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <ItemList
-                  key={item.id}
-                  type="notification"
-                  judul={item.jenis_surat}
-                  date={item.tanggal}
-                  status={item.status}
-                  onPress={() => navigation.navigate('NewsDetail', item)}
-                />
-              )}
-              keyExtractor={item => item.id}
-              contentContainerStyle={{ columnGap: SIZES.medium }}
-            />
-          ) : (
-            <View
+        {allData.status ? (
+          <FlatList
+            data={allData.data}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <ItemList
+                key={item.id}
+                type="notification"
+                judul={item.jenis_surat}
+                date={item.tanggal}
+                status={item.status}
+                onPress={() => navigation.navigate('NewsDetail', item)}
+              />
+            )}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{ columnGap: SIZES.medium }}
+          />
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              alignContent: 'center',
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
               style={{
-                flex: 3,
-                alignContent: 'center',
-                alignSelf: 'center',
-                justifyContent: 'center',
+                color: '#8D92A3',
+                fontSize: 11,
               }}>
-              <Text
-                style={{
-                  color: '#8D92A3',
-                  fontSize: 11,
-                }}>
-                {allData.pesan}
-              </Text>
-            </View>
-          )}
-        </ScrollView>
+              {allData.pesan}
+            </Text>
+          </View>
+        )}
       </SafeAreaView>
     </>
   );

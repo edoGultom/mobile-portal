@@ -170,40 +170,45 @@ const Pengaduan = ({ navigation }) => {
         title="Pengaduan"
         subtitle="Silahkan tambah pengaduan Anda disini"
       />
-      <ScrollView index={1} showsVerticalScrollIndicator={false}>
-        <View style={styles.page}>
-          {
-            pengaduanReducer.listPengaduan.length > 0 ?
-              (
-                <FlatList
-                  data={pengaduanReducer.listPengaduan}
-                  showsVerticalScrollIndicator={false}
-                  renderItem={({ item }) => (
-                    <ItemList
-                      key={item}
-                      type="pengaduan"
-                      judul={item.subjek}
-                      kategori={item.isi}
-                      date={item.tgl_pengaduan}
-                      items={item}
-                      onPress={() => {
-                        setModalDetail(!isModalDetail)
-                        setSelected(item)
-                      }
-                      }
-                    />
-                  )}
-                  keyExtractor={item => item}
-                  contentContainerStyle={{ columnGap: SIZES.medium }}
-                  vertical
-                />
-              ) :
-              (
-                <Text style={{ justifyContent: 'center', alignSelf: 'center' }}>Data Tidak Ditemukan</Text>
-              )
-          }
-        </View>
-      </ScrollView>
+      {/* <ScrollView index={1} showsVerticalScrollIndicator={false}> */}
+      <View style={styles.page}>
+        {
+          pengaduanReducer.listPengaduan.length > 0 ?
+            (
+              <FlatList
+                data={pengaduanReducer.listPengaduan}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <ItemList
+                    key={item}
+                    type="pengaduan"
+                    judul={item.subjek}
+                    kategori={item.isi}
+                    date={item.tgl_pengaduan}
+                    items={item}
+                    onPress={() => {
+                      setModalDetail(!isModalDetail)
+                      setSelected(item)
+                    }
+                    }
+                  />
+                )}
+                keyExtractor={item => item}
+                contentContainerStyle={{ columnGap: SIZES.medium }}
+                vertical
+              />
+            ) :
+            (
+              <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+                <Text style={{
+                  color: '#8D92A3',
+                  fontSize: 11,
+                }}>Data Tidak Ditemukan</Text>
+              </View>
+            )
+        }
+      </View>
+      {/* </ScrollView> */}
       <Fab
         style={styles.floatinBtn}
         onPress={toggleModal}

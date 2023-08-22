@@ -48,10 +48,11 @@ const Kegiatan = () => {
         ) : (
           <View
             style={{
-              flex: 1,
-              alignContent: 'center',
+              flex: 3,
+              alignContent: 'flex-start',
               alignSelf: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
+              paddingVertical: 20
             }}>
             <Text
               style={{
@@ -105,9 +106,10 @@ const Popular = () => {
             style={{
               // backgroundColor: 'red',
               flex: 3,
-              alignContent: 'center',
+              alignContent: 'flex-start',
               alignSelf: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
+              paddingVertical: 20
             }}>
             <Text
               style={{
@@ -143,9 +145,8 @@ const Header = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>News Update</Text>
-          <ScrollView horizontal showsVerticalScrollIndicator={false}>
+          {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.homeContainer}>
-              <Gap width={24} />
               {(articles?.length > 0) ? articles.map(item => {
                 return (
                   <Card
@@ -157,9 +158,44 @@ const Header = () => {
                     onPress={() => navigation.navigate('NewsDetail', item)}
                   />
                 );
-              }) : (<Text>Kosong</Text>)}
+              }) : (
+                <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+                  <Text style={{
+                    color: '#8D92A3',
+                    fontSize: 11,
+                  }}>Data Tidak Ditemukan</Text>
+                </View>
+              )}
             </View>
-          </ScrollView>
+          </ScrollView> */}
+          <View style={styles.homeContainer}>
+            {(articles?.length > 0) ? (
+              <FlatList
+                data={articles}
+                renderItem={({ item }) => (
+                  <Card
+                    key={item.id}
+                    image={{ uri: item.picturePathThumb }}
+                    judul={item.judul}
+                    kategori={item.kategori}
+                    isi={item.isi}
+                    onPress={() => navigation.navigate('NewsDetail', item)}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={{ columnGap: SIZES.medium }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              />
+            ) : (
+              <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+                <Text style={{
+                  color: '#8D92A3',
+                  fontSize: 11,
+                }}>Data Tidak Ditemukan</Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     </View>
@@ -185,17 +221,17 @@ export default function Home() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <CollapsibleHeaderTabView
-        // makeHeaderHeight={() => 200}
-        renderScrollHeader={() => <Header style={{ height: 200 }} />}
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={initialLayout}
-        renderTabBar={renderTabBar}
-      />
-    </SafeAreaView>
+    // <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+    <CollapsibleHeaderTabView
+      // makeHeaderHeight={() => 200}
+      renderScrollHeader={() => <Header style={{ height: 200 }} />}
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={initialLayout}
+      renderTabBar={renderTabBar}
+    />
+    // </SafeAreaView>
   );
 }
 
@@ -234,7 +270,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     color: focused ? '#020202' : '#8D92A3',
   }),
-  homeContainer: { flexDirection: 'row', marginVertical: 10 },
+  homeContainer: { marginLeft: 24, flex: 1, flexDirection: 'row', marginVertical: 10 },
   containerPopular: { flex: 1, paddingTop: 8 },
   containerKegiatan: { flex: 1, paddingTop: 8 },
 

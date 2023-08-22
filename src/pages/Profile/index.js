@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
   },
   tabSaction: {
     flex: 1,
-    marginTop: 24,
+    marginTop: 10,
   },
 });
