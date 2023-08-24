@@ -145,29 +145,6 @@ const Header = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>News Update</Text>
-          {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.homeContainer}>
-              {(articles?.length > 0) ? articles.map(item => {
-                return (
-                  <Card
-                    key={item.id}
-                    image={{ uri: item.picturePathThumb }}
-                    judul={item.judul}
-                    kategori={item.kategori}
-                    isi={item.isi}
-                    onPress={() => navigation.navigate('NewsDetail', item)}
-                  />
-                );
-              }) : (
-                <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', paddingVertical: 20 }}>
-                  <Text style={{
-                    color: '#8D92A3',
-                    fontSize: 11,
-                  }}>Data Tidak Ditemukan</Text>
-                </View>
-              )}
-            </View>
-          </ScrollView> */}
           <View style={styles.homeContainer}>
             {(articles?.length > 0) ? (
               <FlatList
@@ -183,7 +160,7 @@ const Header = () => {
                   />
                 )}
                 keyExtractor={(item) => item.id}
-                contentContainerStyle={{ columnGap: SIZES.medium }}
+                // contentContainerStyle={{ columnGap: SIZES.small }}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               />
@@ -221,7 +198,6 @@ export default function Home() {
   });
 
   return (
-    // <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
     <CollapsibleHeaderTabView
       // makeHeaderHeight={() => 200}
       renderScrollHeader={() => <Header style={{ height: 200 }} />}
@@ -231,7 +207,6 @@ export default function Home() {
       initialLayout={initialLayout}
       renderTabBar={renderTabBar}
     />
-    // </SafeAreaView>
   );
 }
 
@@ -250,6 +225,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
     borderBottomColor: '#FBFBFB',
     borderBottomWidth: 1,
+    marginTop: 24
   },
   container: {
     marginTop: 16,
@@ -263,15 +239,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     fontSize: 20,
     color: '#020202',
-    marginHorizontal: 24,
+    marginHorizontal: 17,
   },
   tabStyle: { width: 'auto' },
   tabText: focused => ({
     fontFamily: 'Poppins-Medium',
     color: focused ? '#020202' : '#8D92A3',
   }),
-  homeContainer: { marginLeft: 24, flex: 1, flexDirection: 'row', marginVertical: 10 },
-  containerPopular: { flex: 1, paddingTop: 8 },
-  containerKegiatan: { flex: 1, paddingTop: 8 },
+  homeContainer: { flex: 1, flexDirection: 'row' },
+  containerPopular: { flex: 1 },
+  containerKegiatan: { flex: 1 },
 
 });

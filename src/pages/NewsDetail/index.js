@@ -41,17 +41,16 @@ const NewsDetail = ({ navigation, route }) => {
             <IcBackWhite />
           </TouchableOpacity>
         </View>
-
       </ImageBackground>
       <View style={styles.content}>
+        <View style={styles.productContainer}>
+          <View>
+            <Text style={styles.title}>{judul}</Text>
+            <Text style={{ marginBottom: 10 }}>{tanggal_posting}</Text>
+          </View>
+        </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.mainContent}>
-            <View style={styles.productContainer}>
-              <View>
-                <Text style={styles.title}>{judul}</Text>
-                <Text>{tanggal_posting}</Text>
-              </View>
-            </View>
             <RenderHtml
               contentWidth={width}
               source={source}

@@ -15,7 +15,10 @@ export const pengaduanAction = createAsyncThunk(
     let formData = new FormData();
     formData.append('subjek', form.subjek);
     formData.append('isi', form.isi);
-    formData.append('file', form.file);
+    if (Object.keys(form.file).length > 0) {
+      formData.append('file', form.file);
+    }
+    // console.log(form.file);
 
     await axios
       .post(`${BE_API_HOST}/pengaduan/tambah`, formData, {
@@ -25,6 +28,7 @@ export const pengaduanAction = createAsyncThunk(
         },
       })
       .then(res => {
+        console.log(res)
         if (res.status) {
           dispatch(addLoading(false));
           dispatch(getPengaduan(tokenApi));//langsung get data

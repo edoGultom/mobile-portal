@@ -44,11 +44,11 @@ const MainApp = () => {
         component={Pengaduan}
         options={{ headerShown: false, tabBarHideOnKeyboard: true }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Notif"
         component={Notif}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -111,6 +111,11 @@ const Router = () => {
       <Stack.Screen
         name="SuccessUpload"
         component={SuccessUpload}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Notif"
+        component={Notif}
         options={{ headerShown: false }}
       />
       {/* bottom Navigation */}

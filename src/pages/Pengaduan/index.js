@@ -146,6 +146,7 @@ const Pengaduan = ({ navigation }) => {
     )
   }
   const DetailPengaduan = (id) => {
+    console.log(dataSelected)
     return (
       <ModalShow show={isModalDetail} setModal={setModalDetail}>
         <View style={{ padding: 10 }}>
@@ -153,12 +154,16 @@ const Pengaduan = ({ navigation }) => {
           <Text>{dataSelected.isi}</Text>
         </View>
         <View style={{ alignSelf: 'center', borderRadius: 5 }}>
-          <Image
-            source={{
-              uri: `http://127.0.0.1:8091/api/lihat-file/by-id?id=29`,
-            }}
-            style={styles.image}
-          />
+          {
+            (dataSelected.idFile !== "") && (
+              <Image
+                source={{
+                  uri: `${dataSelected.picturePath}`,
+                }}
+                style={styles.image}
+              />
+            )
+          }
 
         </View>
       </ModalShow>

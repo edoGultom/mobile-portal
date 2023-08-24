@@ -40,6 +40,7 @@ const Notif = ({ navigation }) => {
       <Header
         title="Notification"
         subtitle="Informasi status pengurusan surat"
+        onBack={() => navigation.goBack()}
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite, }}>
         {allData.status ? (

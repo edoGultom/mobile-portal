@@ -28,7 +28,7 @@ const Icon = ({ label, focused }) => {
     case 'Profile':
       return focused ? <IcProfileOn /> : <IcProfileOff />;
     default:
-      return <IcFormOn />;
+      return <IcHomeOn />;
   }
 };
 const BottomNavigator = ({ state, descriptors, navigation }) => {

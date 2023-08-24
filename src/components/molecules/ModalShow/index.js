@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
         margin: 0,
     },
 
-
     barIcon: {
         width: 60,
         alignSelf: "center",
