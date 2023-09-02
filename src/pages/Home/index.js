@@ -165,7 +165,7 @@ const Header = () => {
                 showsHorizontalScrollIndicator={false}
               />
             ) : (
-              <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center', paddingVertical: 20 }}>
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 20 }}>
                 <Text style={{
                   color: '#8D92A3',
                   fontSize: 11,

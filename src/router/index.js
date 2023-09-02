@@ -118,6 +118,7 @@ const Router = () => {
         component={Notif}
         options={{ headerShown: false }}
       />
+
       {/* bottom Navigation */}
       <Stack.Screen
         name="MainApp"

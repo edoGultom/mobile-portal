@@ -20,7 +20,7 @@ const SuccessUpload = ({ navigation }) => {
           alignItems: 'center',
           paddingHorizontal: 20
         }}>
-          <Text style={styles.title}>Upload Berhasil </Text>
+          <Text style={styles.title}>Data Berhasil Disimpan</Text>
           <Gap height={6} />
           <Text style={styles.subTitle}>Surat Keterangan Domisili sedang diproses</Text>
           <Gap height={30} />

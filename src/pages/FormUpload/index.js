@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Header, HomeProfile } from '../../components';
-import { getData, showMessage } from '../../utils';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
-import { IcEmptyImage } from '../../assets';
+import { Image, PermissionsAndroid, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { addPhotoKtp, uploadPhoto } from '../../redux/formSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { PermissionsAndroid } from 'react-native';
-import { BE_API_HOST } from '@env';
+import { IcEmptyImage } from '../../assets';
+import { Button, Gap, Header, TextInput, Select, DatePickerFrm } from '../../components';
+import { addPhotoKtp, submitFormSurat } from '../../redux/formSlice';
 import { addLoading } from '../../redux/globalSlice';
+import { getData, showMessage, useFormHook } from '../../utils';
+import Moment from 'moment';
+import 'moment/locale/id';
 
 const FormUpload = ({ navigation }) => {
   const [photo, setPhoto] = useState('');
-  const [permission, setPermission] = useState('');
   const [userProfile, setUserProfile] = useState({});
+  const [showPicker, setShowPicker] = useState(false);
+  const [selectedDate, setDateSelected] = useState('');
+  Moment.locale('id');
 
+  const jenisKelamin = [
+    {
+      label: 'Pria',
+      value: 'Pria',
+    },
+    {
+      label: 'Wanita',
+      value: 'Wanita',
+    }
+  ];
   const { photoKtpReducer } = useSelector(state => state);
   const dispatch = useDispatch();
+
+  const [form, setForm] = useFormHook({
+    nama_lengkap: '',
+    tempat_lahir: '',
+    tgl_lahir: '',
+    jenis_kelamin: '',
+    alamat: '',
+    alamat_domisili: '',
+    keterangan_tempat_tinggal: '',
+    keterangan_keperluan_surat: '',
+  });
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -33,21 +56,22 @@ const FormUpload = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const onUpload = () => {
+  const onSubmit = () => {
     if (photo.length < 1) {
       showMessage('Please select a file to continue!');
     } else {
-
       getData('token').then(res => {
         const token = res
+        let updateForm = { ...form, tgl_lahir: Moment(form.tgl_lahir).format('YYYY-MM-DD') }
         const data = {
+          updateForm,
           photoKtpReducer, //reducer upload
           token,
           userProfile,
           navigation
         };
         dispatch(addLoading(true));
-        dispatch(uploadPhoto(data));
+        dispatch(submitFormSurat(data));
       });
 
     }
@@ -65,7 +89,7 @@ const FormUpload = ({ navigation }) => {
       },
       response => {
         if (response.didCancel || response.errorCode) {
-          showMessage('Anda tidak memilih photo');
+          showMessage(' tidak memilih photo');
         } else {
           if (response.assets && response.assets?.length !== 0) {
             const source = { uri: response.assets[0].uri };
@@ -114,7 +138,7 @@ const FormUpload = ({ navigation }) => {
       },
       response => {
         if (response.didCancel || response.errorCode) {
-          showMessage('Anda tidak memilih photo');
+          showMessage(' tidak memilih photo');
         } else {
           if (response.assets && response.assets?.length !== 0) {
             const source = { uri: response.assets[0].uri };
@@ -131,7 +155,13 @@ const FormUpload = ({ navigation }) => {
       },
     );
   };
+
+  const toggleDatePicker = () => {
+    setShowPicker(!showPicker)
+  }
+
   return (
+
     <View style={styles.page}>
       <Header
         title="Form Registration"
@@ -140,97 +170,183 @@ const FormUpload = ({ navigation }) => {
           navigation.goBack();
         }}
       />
-      <View style={styles.containerUp}>
-        <Text style={styles.title}>Upload a photo e-KTP </Text>
-        <Text style={styles.subtitle}>
-          Regulation require you to upload a national identity card. Don't
-          worry, your data will stay safe and private.
-        </Text>
-        <View style={styles.photo}>
-          <View style={styles.borderPhoto}>
-            <Pressable
-              android_ripple={{
-                color: 'rgb(224, 224, 224)',
-                foreground: true,
-              }}
-              onPress={choosePhoto}
-              style={{
-                width: 345,
-                height: 175,
-                justifyContent: 'center',
-                alignItems: 'center',
-                elevation: 4,
-              }}>
-              {photo ? (
-                <Image source={photo} style={styles.photoKtp} />
-              ) : (
-                <View style={styles.photoContainer}>
-                  <IcEmptyImage />
-                  <Text
-                    style={{
-                      color: '#808B97',
-                      fontFamily: 'Poppins-Medium',
-                      fontWeight: 500,
-                      marginTop: 15,
-                    }}>
-                    Select File
-                  </Text>
-                </View>
-              )}
-            </Pressable>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.containerUp}>
+          <TextInput
+            label="Nama Lengkap"
+            placeholder="Masukkan Nama Lengkap "
+            value={form.nama_lengkap}
+            onChangeText={value => setForm('nama_lengkap', value)}
+          />
+          <Gap height={16} />
+          <TextInput
+            label="Tempat Lahir"
+            placeholder="Masukkan Tempat Lahir "
+            value={form.tempat_lahir}
+            onChangeText={value => setForm('tempat_lahir', value)}
+          />
+          <Gap height={16} />
+
+          {
+            showPicker && (
+              <DatePickerFrm
+                title="Pilih Tanggal"
+                open={showPicker}
+                mode="date"
+                modal={showPicker}
+                value={form.tgl_lahir}
+                onConfirm={(date) => {
+                  setForm('tgl_lahir', date)
+                  setDateSelected(Moment(date).format('Do MMMM YYYY'))
+                  toggleDatePicker(false)
+                }}
+                onCancel={() => {
+                  toggleDatePicker(false)
+                }}
+              />
+            )
+          }
+
+          <Pressable onPress={toggleDatePicker}>
+            <TextInput
+              label="Tanggal Lahir"
+              placeholder={'Masukkan Tanggal Lahir '}
+              value={selectedDate}
+              editable={false}
+              extraStyles={(selectedDate.length > 0) ? '#020202' : ''}
+            />
+          </Pressable>
+          <Gap height={16} />
+          <Select
+            label="Jenis Kelamin"
+            value={form.jenis_kelamin}
+            data={jenisKelamin}
+            placeholder='-Pilih Jenis Kelamin-'
+            onSelectChange={value => setForm('jenis_kelamin', value)}
+          />
+          <Gap height={16} />
+          <TextInput
+            label="Alamat (Sesuai KTP)"
+            placeholder="Masukkan Alamat "
+            value={form.alamat}
+            numberOfLines={3}
+            onChangeText={value => setForm('alamat', value)}
+          />
+          <Gap height={16} />
+          <TextInput
+            label="Alamat Domisili"
+            placeholder="Masukkan Alamat Domisili "
+            numberOfLines={3}
+            value={form.alamat_domisili}
+            onChangeText={value => setForm('alamat_domisili', value)}
+          />
+          <Gap height={16} />
+          <TextInput
+            label="Keterangan Tempat Tingal"
+            placeholder="Masukkan Keterangan Tempat Tingal "
+            value={form.keterangan_tempat_tinggal}
+            onChangeText={value => setForm('keterangan_tempat_tinggal', value)}
+          />
+          <Gap height={16} />
+          <TextInput
+            label="Keterangan Keperluan Surat"
+            placeholder="Masukkan Keterangan Keperluan Surat "
+            value={form.keterangan_keperluan_surat}
+            onChangeText={value => setForm('keterangan_keperluan_surat', value)}
+          />
+          <Gap height={24} />
+
+          <Text style={styles.title}>Upload a photo e-KTP </Text>
+          <Text style={styles.subtitle}>
+            Regulation require you to upload a national identity card. Don't
+            worry, your data will stay safe and private.
+          </Text>
+          <View style={styles.photo}>
+            <View style={styles.borderPhoto}>
+              <Pressable
+                android_ripple={{
+                  color: 'rgb(224, 224, 224)',
+                  foreground: true,
+                }}
+                onPress={choosePhoto}
+                style={{
+                  width: 345,
+                  height: 175,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  elevation: 4,
+                }}>
+                {photo ? (
+                  <Image source={photo} style={styles.photoKtp} />
+                ) : (
+                  <View style={styles.photoContainer}>
+                    <IcEmptyImage />
+                    <Text
+                      style={{
+                        color: '#808B97',
+                        fontFamily: 'Poppins-Medium',
+                        fontWeight: 500,
+                        marginTop: 15,
+                      }}>
+                      Select File
+                    </Text>
+                  </View>
+                )}
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.containerDown}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            flex: 1,
-            alignSelf: 'center',
-          }}>
+        <View style={styles.containerDown}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              flex: 1,
+              alignSelf: 'center',
+            }}>
+            <View
+              style={{
+                flex: 1,
+                height: 1,
+                backgroundColor: '#E2E7EC',
+              }}
+            />
+            <View>
+              <Text style={{ width: 50, textAlign: 'center', color: '#808B97' }}>
+                Or
+              </Text>
+            </View>
+            <View style={{ flex: 1, height: 1, backgroundColor: '#E2E7EC' }} />
+          </View>
           <View
             style={{
               flex: 1,
-              height: 1,
-              backgroundColor: '#E2E7EC',
-            }}
-          />
-          <View>
-            <Text style={{ width: 50, textAlign: 'center', color: '#808B97' }}>
-              Or
-            </Text>
-          </View>
-          <View style={{ flex: 1, height: 1, backgroundColor: '#E2E7EC' }} />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            width: '100%',
-            justifyContent: 'center',
-            padding: 20,
-          }}>
-          <Button
-            text="Open Camera & Take Photo"
-            color="#FFF1C1"
-            textColor="#DEAC02"
-            borderRadius={20}
-            onPress={openCamera}
+              alignSelf: 'center',
+              width: '100%',
+              justifyContent: 'center',
+              padding: 20,
+            }}>
+            <Button
+              text="Open Camera & Take Photo"
+              color="#FFF1C1"
+              textColor="#DEAC02"
+              borderRadius={20}
+              onPress={openCamera}
 
-          />
+            />
+          </View>
+          <View
+            style={{
+              flex: 1,
+              alignSelf: 'center',
+              width: '100%',
+              justifyContent: 'center',
+              padding: 20,
+            }}>
+            <Button text="Simpan" borderRadius={20} onPress={onSubmit} />
+          </View>
         </View>
-        <View
-          style={{
-            flex: 1,
-            alignSelf: 'center',
-            width: '100%',
-            justifyContent: 'center',
-            padding: 20,
-          }}>
-          <Button text="Upload Photo" borderRadius={20} onPress={onUpload} />
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -282,12 +398,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 30,
+    fontSize: 20,
     color: '#020202',
   },
   subtitle: {
     fontFamily: 'Poppins-Light',
-    fontSize: 18,
+    fontSize: 16,
     color: '#8D92A3',
   },
   header: {

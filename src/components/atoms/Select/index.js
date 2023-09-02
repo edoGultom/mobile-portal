@@ -1,20 +1,29 @@
-import {Picker} from '@react-native-picker/picker';
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-const Select = ({label, value, onSelectChange}) => {
+const Select = ({ label, value, data, placeholder, onSelectChange }) => {
+  const [pickerFocused, setPickerFocused] = useState(false)
+
   return (
-    <View>
+    <View >
       <Text style={styles.label}>{label}</Text>
       <View style={styles.input}>
         <Picker
+          onFocus={() => setPickerFocused(true)}
+          onBlur={() => setPickerFocused(false)}
           selectedValue={value}
-          onValueChange={itemValue => onSelectChange(itemValue)}>
-          <Picker.Item label="Aras Kabu" value="Aras Kabu" />
-          <Picker.Item label="Beringin" value="Beringin" />
-          <Picker.Item label="Karang Anyar" value="Karang Anyar" />
-          <Picker.Item label="Sidourip" value="Sidourip" />
-          <Picker.Item label="Tumpatan" value="Tumpatan" />
+          onValueChange={itemValue => onSelectChange(itemValue)}
+        >
+          {
+            placeholder.length > 0 && <Picker.Item value='' label={placeholder} enabled={!pickerFocused} style={styles.placeholder} />
+          }
+          {
+            data.map((val, idx) =>
+            (
+              <Picker.Item label={val.label} value={val.value} />
+            ))
+          }
         </Picker>
       </View>
     </View>
@@ -24,6 +33,9 @@ const Select = ({label, value, onSelectChange}) => {
 export default Select;
 
 const styles = StyleSheet.create({
+  placeholder: {
+    color: "grey",  // PLACE HOLDER COLOR
+  },
   label: {
     fontSize: 16,
     fontFamily: 'Poppins-Regular',

@@ -15,6 +15,20 @@ const SignUpAddress = ({ navigation }) => {
     address: '',
     kelurahan: '',
   });
+  const dataKelurahan = [
+    {
+      label: 'Beringin',
+      value: 'Beringin',
+    },
+    {
+      label: 'Sidourip',
+      value: 'Sidourip',
+    },
+    {
+      label: 'Tumpatan',
+      value: 'SiTumpatandourip',
+    },
+  ];
 
   // destructering reducer dengan mengeassign ke masing masing reducer
   const { signUpReducer, photoReducer } = useSelector(state => state);
@@ -59,6 +73,8 @@ const SignUpAddress = ({ navigation }) => {
           <Select
             label="Kelurahan"
             value={form.kelurahan}
+            data={dataKelurahan}
+            placeholder='-Pilih Kelurahan-'
             onSelectChange={value => setForm('kelurahan', value)}
           />
           <Gap height={24} />

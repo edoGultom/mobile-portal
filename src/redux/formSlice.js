@@ -34,20 +34,28 @@ export const uploadKtpSlice = createSlice({
   },
 });
 
-export const uploadPhoto = createAsyncThunk(
+export const submitFormSurat = createAsyncThunk(
   'post/postPhoto',
   async (obj, { dispatch }) => {
-    const { photoKtpReducer, token, userProfile, navigation } = obj
+    const { updateForm, photoKtpReducer, token, userProfile, navigation } = obj
     const tokenApi = `${token.value}`;
 
     // upload ktp
     if (photoKtpReducer.isUploadPhoto) {
       const dataImgae = photoKtpReducer;
-      const photoForUpload = new FormData();
-      photoForUpload.append('file', dataImgae);
-      console.log(tokenApi)
+      const formData = new FormData();
+      formData.append('nama_lengkap', updateForm.nama_lengkap);
+      formData.append('tempat_lahir', updateForm.tempat_lahir);
+      formData.append('tgl_lahir', updateForm.tgl_lahir);
+      formData.append('jenis_kelamin', updateForm.jenis_kelamin);
+      formData.append('alamat', updateForm.alamat);
+      formData.append('alamat_domisili', updateForm.alamat_domisili);
+      formData.append('keterangan_tempat_tinggal', updateForm.keterangan_tempat_tinggal);
+      formData.append('keterangan_keperluan_surat', updateForm.keterangan_keperluan_surat);
+      formData.append('file', dataImgae);
+      console.log(dataImgae)
       axios
-        .post(`${BE_API_HOST}/upload-file/upload-ktp?userId=${userProfile.id}`, photoForUpload, {
+        .post(`${BE_API_HOST}/pengusulan-surat/create`, formData, {
           headers: {
             Authorization: tokenApi,
             'Content-Type': 'multipart/form-data',
@@ -62,13 +70,6 @@ export const uploadPhoto = createAsyncThunk(
               routes: [{ name: 'SuccessUpload' }],
             });
           }
-          // profile.profile_photo_url = resUpload.data.data.path;
-
-          // storeData('userProfile', profile);
-          // data.navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'SuccessSignUp' }],
-          // });
         })
         .catch(err => {
           console.log('gagal upload', err);

@@ -20,11 +20,17 @@ const Pengaduan = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getData('token').then(res => {
-      const tokenApi = `${res.value}`;
-      dispatch(getPengaduan(tokenApi));
+    // getData('token').then(res => {
+    //   const tokenApi = `${res.value}`;
+    //   dispatch(getPengaduan(tokenApi));
+    // });
+    navigation.addListener('focus', () => {
+      getData('token').then(res => {
+        const tokenApi = `${res.value}`;
+        dispatch(getPengaduan(tokenApi));
+      });
     });
-  }, []);
+  }, [navigation]);
 
   const toggleModal = () => {
     setModalForm(!isModalForm);
@@ -146,14 +152,37 @@ const Pengaduan = ({ navigation }) => {
     )
   }
   const DetailPengaduan = (id) => {
-    console.log(dataSelected)
+    const [form, setForm] = useFormHook({
+      balasan: '',
+    });
+    console.log(dataSelected.tanggapan)
     return (
       <ModalShow show={isModalDetail} setModal={setModalDetail}>
         <View style={{ padding: 10 }}>
-          <Text style={styles.label}>Keterangan Pengaduan </Text>
+          <Text style={styles.label}>Tanggapan</Text>
           <Text>{dataSelected.isi}</Text>
+
         </View>
         <View style={{ alignSelf: 'center', borderRadius: 5 }}>
+          {/* {
+            dataSelected.tanggapan.length > 0 ?
+              (
+
+                <FlatList
+                  data={dataSelected.tanggapan}
+                  keyExtractor={(item) => item.id}
+                  renderItem={({ item }) => <Text>{item.userData.userName}</Text>}
+                />
+              ) :
+              (
+                <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+                  <Text style={{
+                    color: '#8D92A3',
+                    fontSize: 11,
+                  }}>Data Tidak Ditemukan</Text>
+                </View>
+              )
+          } */}
           {
             (dataSelected.idFile !== "") && (
               <Image
@@ -164,7 +193,12 @@ const Pengaduan = ({ navigation }) => {
               />
             )
           }
-
+          {/* <TextInput
+            placeholder='Balas'
+            value={form.balasan}
+            style={styles.balasan}
+            onChangeText={value => setForm('balasan', value)}
+          /> */}
         </View>
       </ModalShow>
     )
@@ -282,6 +316,7 @@ const styles = StyleSheet.create({
   label: { fontSize: 16, fontFamily: 'Poppins-Regular', color: '#020202' },
   isi: { borderWidth: 1, borderColor: '#020202', borderRadius: 8, padding: 10 },
   subjek: { borderWidth: 1, borderColor: '#020202', borderRadius: 8, padding: 5 },
+  balasan: { borderWidth: 1, borderColor: '#020202', borderRadius: 8 },
 
   page: {
     flex: 1,
