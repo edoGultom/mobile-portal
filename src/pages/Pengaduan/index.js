@@ -16,14 +16,10 @@ const Pengaduan = ({ navigation }) => {
   const [isModalForm, setModalForm] = useState(false);
   const [isModalDetail, setModalDetail] = useState(false);
   const [dataSelected, setSelected] = useState({});
-
+  const [photos, setPhotos] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // getData('token').then(res => {
-    //   const tokenApi = `${res.value}`;
-    //   dispatch(getPengaduan(tokenApi));
-    // });
     navigation.addListener('focus', () => {
       getData('token').then(res => {
         const tokenApi = `${res.value}`;
@@ -34,24 +30,69 @@ const Pengaduan = ({ navigation }) => {
 
   const toggleModal = () => {
     setModalForm(!isModalForm);
+    setPhotos([])
+  };
+
+  const choosePhoto = () => {
+    launchImageLibrary(
+      {
+        // quality: 0.9,
+        quality: 1.0,
+        selectionLimit: 3,
+        mediaType: 'photo',
+      },
+      response => {
+        if (response.didCancel || response.errorCode) {
+          showMessage('Anda tidak memilih photo');
+        } else {
+          if (response.assets && response.assets?.length !== 0) {
+
+            let results = [];
+            let temp = [];
+            response.assets.forEach(imageInfo => {
+              let checkFiles = checkPhoto(imageInfo.fileSize);
+              if (checkFiles.length === 0) {
+                results.push(imageInfo)
+              }
+            });
+
+
+            if (response.assets.length > 1) {
+              // multi images. ***it doesn't work!!!***
+              setPhotos([...results, ...photos]); // a list
+            } else {
+              //image only 1  **it works!**
+              setPhotos(results); // a list 
+            }
+          }
+        }
+      },
+    );
+  };
+  const checkPhoto = (size) => {
+    return photos.filter(item => {
+      return item.fileSize === size
+    })
   };
 
   const FormPengaduan = () => {
     const [form, setForm] = useFormHook({
       isi: '',
       subjek: '',
-      file: {}
     });
+
     const onSubmit = () => {
       if (form.isi.length < 1 || form.subjek.length < 1) {
         setModalForm(!isModalForm);
-        showMessage('Silahkan isi form');
+        showMessage('Silahkan isi form!');
       } else {
         getData('token').then(res => {
           const token = res
+
           const obj = {
             token,
             form,
+            photos,
             navigation,
           };
 
@@ -63,31 +104,8 @@ const Pengaduan = ({ navigation }) => {
       }
 
     };
-    const choosePhoto = () => {
-      launchImageLibrary(
-        {
-          quality: 0.9,
-          // maxHeight: 500,
-          // maxWidth: 500,
-        },
-        response => {
-          if (response.didCancel || response.errorCode) {
-            showMessage('Anda tidak memilih photo');
-          } else {
-            if (response.assets && response.assets?.length !== 0) {
-              const source = { uri: response.assets[0].uri };
-              const datImage = {
-                uri: response.assets[0].uri,
-                type: response.assets[0].type,
-                name: response.assets[0].fileName,
-                isUploadPhoto: true,
-              };
-              setForm('file', datImage);
-            }
-          }
-        },
-      );
-    };
+
+
     return (
       <ModalShow show={isModalForm} setModal={setModalForm}>
         <Text style={styles.label}>Pengaduan</Text>
@@ -109,6 +127,7 @@ const Pengaduan = ({ navigation }) => {
           onChangeText={value => setForm('isi', value)}
         />
         <Gap height={10} />
+
         <View style={styles.photo}>
           <View style={styles.borderPhoto}>
             <Pressable
@@ -119,31 +138,50 @@ const Pengaduan = ({ navigation }) => {
               onPress={choosePhoto}
               style={{
                 width: 345,
-                height: 175,
-                justifyContent: 'center',
-                alignItems: 'center',
+                height: 110,
+                justifyContent: 'space-around',
+                alignItems: 'start',
                 elevation: 4,
               }}>
-              {form?.file?.uri ? (
-                <Image source={{ uri: `${form.file.uri}` }} style={styles.photoKtp} />
-              ) : (
-                <View style={styles.photoContainer}>
-                  <IcEmptyImage />
-                  <Text
-                    style={{
-                      color: '#808B97',
-                      fontFamily: 'Poppins-Medium',
-                      fontWeight: 500,
-                      marginTop: 15,
-                    }}>
-                    Select File
-                  </Text>
-                </View>
-              )}
+
+              <View style={styles.photoContainer}>
+                <IcEmptyImage />
+                <Text
+                  style={{
+                    color: '#808B97',
+                    fontFamily: 'Poppins-Medium',
+                    fontWeight: 500,
+                    marginTop: 10,
+                  }}>
+                  Select Files
+                </Text>
+              </View>
             </Pressable>
           </View>
         </View>
         <Gap height={10} />
+        {
+          photos.length > 0 && (
+            <View style={{ height: 'auto' }}>
+              <ScrollView>
+                <View style={{ paddingHorizontal: 16, flexDirection: 'row' }}>
+                  <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    data={photos}
+                    renderItem={({ item }) =>
+                    (
+                      <Image source={{ uri: `${item.uri}` }} style={styles.photoKtp} />
+                    )}
+                    keyExtractor={item => item.uri}
+                    horizontal
+                    contentContainerStyle={{ columnGap: SIZES.medium }}
+                  />
+                </View>
+              </ScrollView>
+              <Gap height={10} />
+            </View>
+          )
+        }
         <Button
           text="Kirim"
           onPress={onSubmit}
@@ -189,7 +227,7 @@ const Pengaduan = ({ navigation }) => {
                 source={{
                   uri: `${dataSelected.picturePath}`,
                 }}
-                style={styles.image}
+                style={styles.imageDetail}
               />
             )
           }
@@ -255,9 +293,9 @@ const Pengaduan = ({ navigation }) => {
       {/* <DetailPengaduan />
        */}
       {/* MODAL FORM */}
-      {isModalForm && (
-        <FormPengaduan />
-      )}
+      {/* {isModalForm && ( */}
+      <FormPengaduan />
+      {/* )} */}
       {isModalDetail && (
         <DetailPengaduan />
       )}
@@ -268,26 +306,28 @@ export default Pengaduan;
 
 const styles = StyleSheet.create({
   photoKtp: {
-    width: undefined,
-    height: '100%',
-    aspectRatio: 1,
+    width: 50,
+    height: 50,
+    // aspectRatio: 1,
     alignSelf: 'center',
+    borderRadius: 5
   },
   photo: {
     alignItems: 'center',
   },
-  image: {
-    width: 300,
-    height: 300,
+  imageDetail: {
+    width: 100,
+    height: 100,
     borderRadius: 8,
     overflow: 'hidden',
     marginVertical: 12,
     marginHorizontal: 12,
   },
   photoContainer: {
-    width: 345,
-    height: 175,
+    width: 'auto',
+    height: 90,
     borderRadius: 15,
+    backgroundColor: 'red',
     backgroundColor: '#F0F0F0',
     alignItems: 'center',
     justifyContent: 'center',
@@ -295,13 +335,14 @@ const styles = StyleSheet.create({
   borderPhoto: {
     borderWidth: 2,
     borderColor: '#78B7BB',
-    width: 350,
-    height: 180,
+    width: '100%',
+    height: 130,
     borderRadius: 10,
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F0F1F3',
+    backgroundColor: '#F0F0F0',
+    paddingHorizontal: 16
   },
   textInput: {
     alignSelf: "stretch",

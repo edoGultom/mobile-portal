@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import Modal from "react-native-modal";
 
 export default function ModalShow({ show, setModal, children }) {
@@ -12,7 +12,7 @@ export default function ModalShow({ show, setModal, children }) {
             onBackButtonPress={() => setModal(false)}
             isVisible={show}
             swipeDirection="down"
-            onSwipeComplete={toggleModal}
+            onSwipeComplete={() => setModal(!show)}
             animationIn="bounceInUp"
             animationOut="bounceOutDown"
             animationInTiming={900}
@@ -21,9 +21,12 @@ export default function ModalShow({ show, setModal, children }) {
             backdropTransitionOutTiming={500}
             style={styles.modal}
         >
+
             <View style={styles.modalContent}>
+                {/* <ScrollView> */}
                 <View style={styles.barIcon} />
                 {children}
+                {/* </ScrollView> */}
             </View>
         </Modal>
     );
@@ -32,6 +35,7 @@ const styles = StyleSheet.create({
     modal: {
         justifyContent: "flex-end",
         margin: 0,
+        flex: 1
     },
 
     barIcon: {

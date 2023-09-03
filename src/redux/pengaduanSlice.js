@@ -9,17 +9,24 @@ export const pengaduanAction = createAsyncThunk(
   'post/postPengaduan',
   async (obj, { dispatch }) => {
     dispatch(addLoading(true));
-    const { filePengaduan, form, token } = obj;
+    const { filePengaduan, form, photos, token } = obj;
     const tokenApi = `${token.value}`;
 
     let formData = new FormData();
     formData.append('subjek', form.subjek);
     formData.append('isi', form.isi);
-    if (Object.keys(form.file).length > 0) {
-      formData.append('file', form.file);
-    }
+
+    photos.forEach(val => {
+      const datImage = {
+        uri: val.uri,
+        type: val.type,
+        name: val.fileName,
+      };
+      formData.append("file[]", datImage)
+    })
+
     await axios
-      .post(`${BE_API_HOST}/pengaduan/tambah`, formData, {
+      .post(`${BE_API_HOST}/pengaduan/create`, formData, {
         headers: {
           Authorization: tokenApi,
           'Content-Type': 'multipart/form-data',
