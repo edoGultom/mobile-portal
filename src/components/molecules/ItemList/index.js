@@ -25,7 +25,7 @@ const ItemList = ({
               <Text style={styles.date}> {items.isi?.length > 35 ? `${items.isi.substring(0, 35)} ...` : items.isi}</Text>
             </View>
             <View style={{ flexDirection: 'column' }}>
-              <Text style={{ color: items.status === 'Tolak' ? '#D9435E' : '#1ABC9C', alignSelf: 'flex-end' }}>{items.status}</Text>
+              <Text style={{ color: items.status === 'Mengusulkan' ? '#1C82AD' : '#1ABC9C', alignSelf: 'flex-end' }}>{items.status}</Text>
               <Text style={styles.date}>{date}</Text>
             </View>
           </>
