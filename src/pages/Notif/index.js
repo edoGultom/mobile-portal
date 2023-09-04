@@ -54,7 +54,7 @@ const Notif = ({ navigation }) => {
                 judul={item.jenis_surat}
                 date={item.tanggal}
                 status={item.status}
-                onPress={() => navigation.navigate('NewsDetail', item)}
+              // onPress={() => navigation.navigate('NewsDetail', item)}
               />
             )}
             keyExtractor={item => item.id}

@@ -48,6 +48,40 @@ export const pengaduanAction = createAsyncThunk(
   },
 );
 
+export const balasanAction = createAsyncThunk(
+  'post/postBalasan',
+  async (obj, { dispatch }) => {
+    // dispatch(addLoading(true));
+    const { id, token, formBalasan } = obj;
+    const tokenApi = `${token.value}`;
+    console.log(formBalasan.balasan);
+    let formData = new FormData();
+    formData.append('balasan', formBalasan.balasan);
+    formData.append('id', id);
+
+    await axios
+      .post(`${BE_API_HOST}/pengaduan/kirim`, formData, {
+        headers: {
+          Authorization: tokenApi,
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(res => {
+        if (res.status) {
+          // dispatch(addLoading(false));
+          dispatch(getPengaduan(tokenApi));//langsung get data
+        } else {
+          showMessage(res.pesan);
+        }
+      })
+      .catch(err => {
+        // dispatch(addLoading(false));
+        showMessage(err?.response?.data?.message);
+        console.log(err);
+      });
+  },
+);
+
 export const getPengaduan = createAsyncThunk(
   'get/getPengaduan',
   async (arg, { dispatch }) => {

@@ -1,38 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { TextInput } from 'react-native-paper';
+// import { TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { IcEmptyImage } from '../../assets';
-import { Button, Fab, Gap, Header, ItemList, ModalShow } from '../../components';
-import { COLORS, SIZES } from '../../constants';
-import { getPengaduan, pengaduanAction } from '../../redux/pengaduanSlice';
+import { Button, Fab, Gap, Header, ItemList, ModalShow, TextInput } from '../../components';
+import { COLORS, SIZES, SHADOWS } from '../../constants';
+import { balasanAction, getPengaduan, pengaduanAction } from '../../redux/pengaduanSlice';
 import { getData, showMessage, useFormHook } from '../../utils';
-import { BE_API_HOST } from '@env';
 
-const Pengaduan = ({ navigation }) => {
-  const { pengaduanReducer } = useSelector(state => state);
-
-  const [isModalForm, setModalForm] = useState(false);
-  const [isModalDetail, setModalDetail] = useState(false);
-  const [dataSelected, setSelected] = useState({});
-  const [photos, setPhotos] = useState([]);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      getData('token').then(res => {
-        const tokenApi = `${res.value}`;
-        dispatch(getPengaduan(tokenApi));
-      });
-    });
-  }, [navigation]);
-
-  const toggleModal = () => {
-    setModalForm(!isModalForm);
-    setPhotos([])
-  };
-
+const FormPengaduan = ({ form, photos, setPhotos, setForm, setModalForm, isModalForm, onSubmit }) => {
   const choosePhoto = () => {
     launchImageLibrary(
       {
@@ -55,8 +32,6 @@ const Pengaduan = ({ navigation }) => {
                 results.push(imageInfo)
               }
             });
-
-
             if (response.assets.length > 1) {
               // multi images. ***it doesn't work!!!***
               setPhotos([...results, ...photos]); // a list
@@ -75,57 +50,35 @@ const Pengaduan = ({ navigation }) => {
     })
   };
 
-  const FormPengaduan = () => {
-    const [form, setForm] = useFormHook({
-      isi: '',
-      subjek: '',
-    });
-
-    const onSubmit = () => {
-      if (form.isi.length < 1 || form.subjek.length < 1) {
-        setModalForm(!isModalForm);
-        showMessage('Silahkan isi form!');
-      } else {
-        getData('token').then(res => {
-          const token = res
-
-          const obj = {
-            token,
-            form,
-            photos,
-            navigation,
-          };
-
-          setModalForm(!isModalForm);
-          dispatch(pengaduanAction(obj));
-          setForm('reset')
-        });
-
-      }
-
-    };
-
-
-    return (
-      <ModalShow show={isModalForm} setModal={setModalForm}>
-        <Text style={styles.label}>Pengaduan</Text>
+  return (
+    <ModalShow
+      onBackdropPress={() => setModalForm(false)}
+      onBackButtonPress={() => setModalForm(false)}
+      isVisible={isModalForm}
+      onSwipeComplete={() => setModalForm(!isModalForm)}
+    >
+      <View style={styles.modalContent}>
+        <View style={styles.barIcon} />
         <TextInput
-          placeholder='Masukkan Subjek'
+          label="Subjek"
+          placeholder="Masukkan Subjek"
           value={form.subjek}
-          style={styles.subjek}
           onChangeText={value => setForm('subjek', value)}
         />
         <Gap height={10} />
+
         <TextInput
           key={2}
           multiline={true}
           numberOfLines={3}
+          label="Isi"
           textAlignVertical="top"
           placeholder='Masukkan Isi'
           value={form.isi}
           style={styles.isi}
-          onChangeText={value => setForm('isi', value)}
+          onChangeText={(value) => setForm('isi', value)}
         />
+
         <Gap height={10} />
 
         <View style={styles.photo}>
@@ -186,68 +139,189 @@ const Pengaduan = ({ navigation }) => {
           text="Kirim"
           onPress={onSubmit}
         />
-      </ModalShow>
-    )
-  }
-  const DetailPengaduan = (id) => {
-    const [form, setForm] = useFormHook({
-      balasan: '',
-    });
-    console.log(dataSelected.tanggapan)
-    return (
-      <ModalShow show={isModalDetail} setModal={setModalDetail}>
-        <View style={{ padding: 10 }}>
-          <Text style={styles.label}>Tanggapan</Text>
-          <Text>{dataSelected.isi}</Text>
+      </View>
 
-        </View>
-        <View style={{ alignSelf: 'center', borderRadius: 5 }}>
-          {/* {
-            dataSelected.tanggapan.length > 0 ?
-              (
+    </ModalShow>
+  )
+}
+const DetailPengaduan = ({ formBalasan, setFormBalasan, dataSelected, setModalDetail, isModalDetail, onSubmitBalasan }) => {
 
+  // const [listBalasan, setListBalasan] = useState([]);
+  // useEffect(() => {
+  //   getData('userProfile').then(res => {
+  //     setListBalasan(dataSelected.tanggapan.filter((x) => (x.id_user === res.id)))
+  //   });
+  // }, [dataSelected.tanggapan]);
+
+  console.log(dataSelected, 'ass')
+
+  return (
+    <ModalShow
+      onBackdropPress={() => setModalDetail(false)}
+      onBackButtonPress={() => setModalDetail(false)}
+      isVisible={isModalDetail}
+      onSwipeComplete={() => setModalDetail(!isModalDetail)}
+    >
+      <View style={{ padding: 10 }}>
+        <Text style={styles.label}>Tanggapan</Text>
+      </View>
+      {
+        dataSelected.picturePaths.length > 0 && (
+          <View style={{ height: 100 }}>
+            <Text style={{ paddingHorizontal: 10 }}>All File :</Text>
+            <Gap height={10} />
+            <ScrollView>
+              <View style={{ paddingHorizontal: 10, flexDirection: 'row' }}>
                 <FlatList
-                  data={dataSelected.tanggapan}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => <Text>{item.userData.userName}</Text>}
+                  showsHorizontalScrollIndicator={false}
+                  data={dataSelected.picturePaths}
+                  renderItem={({ item }) =>
+                  (
+                    <Image source={{ uri: `${item}` }} style={styles.photoKtp} />
+                  )}
+                  keyExtractor={item => item}
+                  horizontal
+                  contentContainerStyle={{ columnGap: SIZES.medium }}
                 />
-              ) :
-              (
-                <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-                  <Text style={{
-                    color: '#8D92A3',
-                    fontSize: 11,
-                  }}>Data Tidak Ditemukan</Text>
-                </View>
-              )
-          } */}
-          {
-            (dataSelected.idFile !== "") && (
-              <Image
-                source={{
-                  uri: `${dataSelected.picturePath}`,
+              </View>
+            </ScrollView>
+          </View>
+        )
+      }
+
+      {
+        dataSelected.tanggapan.length > 0 && (
+          <>
+            <View style={{
+              height: 'auto',
+              minHeight: 90,
+              maxHeight: 250,
+              backgroundColor: COLORS.lightWhite
+            }}>
+              <FlatList
+                data={dataSelected.tanggapan}
+                showsVerticalScrollIndicator={true}
+                renderItem={({ item }) => (
+                  <ItemList
+                    key={item}
+                    type="tanggapan"
+                    date={item.id}
+                    items={item}
+                  />
+                )}
+                keyExtractor={item => item.id}
+                contentContainerStyle={{
+                  columnGap: SIZES.small,
                 }}
-                style={styles.imageDetail}
+                vertical
               />
-            )
-          }
-          {/* <TextInput
-            placeholder='Balas'
-            value={form.balasan}
-            style={styles.balasan}
-            onChangeText={value => setForm('balasan', value)}
-          /> */}
-        </View>
-      </ModalShow>
-    )
-  }
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 5, paddingHotizontal: 16 }}>
+              <View style={{ flex: 3 }}>
+                <TextInput
+                  label=""
+                  autoFocus={true}
+                  placeholder="Balas Tanggapan"
+                  value={formBalasan.balasan}
+                  onChangeText={value => setFormBalasan('balasan', value)}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Button
+                  text="Kirim"
+                  onPress={() => onSubmitBalasan(dataSelected.id)}
+                />
+              </View>
+            </View>
+          </>
+        )
+      }
+      <Gap height={10} />
+    </ModalShow>
+  )
+}
+const Pengaduan = ({ navigation }) => {
+  const { pengaduanReducer } = useSelector(state => state);
+  const [isModalForm, setModalForm] = useState(false);
+  const [isModalDetail, setModalDetail] = useState(false);
+  const [dataSelected, setSelected] = useState({});
+  const [photos, setPhotos] = useState([]);
+  const dispatch = useDispatch();
+
+  const [form, setForm] = useFormHook({
+    isi: '',
+    subjek: '',
+  });
+
+  const [formBalasan, setFormBalasan] = useFormHook({
+    balasan: '',
+  });
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      getData('token').then(res => {
+        const tokenApi = `${res.value}`;
+        dispatch(getPengaduan(tokenApi));
+      });
+    });
+  }, [navigation]);
+
+  const toggleModal = () => {
+    setModalForm(!isModalForm);
+    setPhotos([])
+    setForm('reset')
+  };
+
+  const onSubmit = () => {
+    if (form.isi.length < 1 || form.subjek.length < 1 || photos.length < 1) {
+      setModalForm(!isModalForm);
+      if (form.isi.length < 1 || form.subjek.length < 1) {
+        showMessage('Silahkan isi form!');
+      } else if (photos.length < 1) {
+        showMessage('Dokumen Harus diisi!');
+      }
+    } else {
+      getData('token').then(res => {
+        const token = res
+
+        const obj = {
+          token,
+          form,
+          photos,
+          navigation,
+        };
+
+        setModalForm(!isModalForm);
+        dispatch(pengaduanAction(obj));
+        setForm('reset')
+      });
+
+    }
+
+  };
+
+  const onSubmitBalasan = (id) => {
+    if (formBalasan.balasan.length > 1) {
+      getData('token').then(res => {
+        const token = res
+        const obj = {
+          id,
+          token,
+          formBalasan,
+          navigation,
+        };
+        setModalDetail(!isModalDetail);
+        dispatch(balasanAction(obj));
+        setFormBalasan('reset')
+      });
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite, }}>
       <Header
         title="Pengaduan"
         subtitle="Silahkan tambah pengaduan Anda disini"
       />
-      {/* <ScrollView index={1} showsVerticalScrollIndicator={false}> */}
       <View style={styles.page}>
         {
           pengaduanReducer.listPengaduan.length > 0 ?
@@ -285,19 +359,17 @@ const Pengaduan = ({ navigation }) => {
             )
         }
       </View>
-      {/* </ScrollView> */}
       <Fab
         style={styles.floatinBtn}
         onPress={toggleModal}
       />
-      {/* <DetailPengaduan />
-       */}
+
       {/* MODAL FORM */}
-      {/* {isModalForm && ( */}
-      <FormPengaduan />
-      {/* )} */}
+      {isModalForm && (
+        <FormPengaduan form={form} photos={photos} setPhotos={setPhotos} setForm={setForm} setModalForm={setModalForm} isModalForm={isModalForm} onSubmit={onSubmit} />
+      )}
       {isModalDetail && (
-        <DetailPengaduan />
+        <DetailPengaduan formBalasan={formBalasan} setFormBalasan={setFormBalasan} dataSelected={dataSelected} setModalDetail={setModalDetail} isModalDetail={isModalDetail} onSubmitBalasan={onSubmitBalasan} />
       )}
     </SafeAreaView>
   );

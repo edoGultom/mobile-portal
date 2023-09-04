@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import RenderHtml from 'react-native-render-html';
+import { SIZES } from '../../../constants';
 
 const ItemList = ({
   image,
@@ -23,11 +25,93 @@ const ItemList = ({
               <Text style={styles.date}> {items.isi?.length > 35 ? `${items.isi.substring(0, 35)} ...` : items.isi}</Text>
             </View>
             <View style={{ flexDirection: 'column' }}>
-              <Text style={{ color: items.status === 'Tolak' ? '#D9435E' : '#1ABC9C' }}>{items.status}</Text>
+              <Text style={{ color: items.status === 'Tolak' ? '#D9435E' : '#1ABC9C', alignSelf: 'flex-end' }}>{items.status}</Text>
               <Text style={styles.date}>{date}</Text>
             </View>
           </>
         );
+
+      case 'tanggapan':
+        const { width } = useWindowDimensions();
+        return (
+          <View style={{
+            margin: 0,
+            flex: 1,
+            padding: 10,
+          }}>
+            {
+              items.role === 'Admin' ? (
+                <>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start'
+                  }}>
+                    <Text style={{
+                      fontSize: SIZES.medium,
+                      fontFamily: 'Poppins-Regular',
+                      color: items.role === 'User' ? '#36AE7C' : '#1C82AD'
+                    }}>
+                      {items.username}
+                    </Text>
+                    <Text style={styles.date}>{items.tgl_tanggapan}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'flex-start',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      width: '100%',
+                    }}
+                  >
+                    <RenderHtml
+                      contentWidth={width}
+                      source={{ html: items.tanggapan }}
+                    />
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end'
+                  }}>
+                    <Text style={{
+                      fontSize: 16,
+                      fontFamily: 'Poppins-Regular',
+                      color: items.role === 'User' ? '#36AE7C' : '#1C82AD'
+                    }}>
+                      {items.username}
+                    </Text>
+                    <Text style={styles.date}>{items.tgl_tanggapan}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      width: '100%'
+                    }}
+                  >
+                    <RenderHtml
+                      contentWidth={width}
+                      source={{ html: items.tanggapan }}
+                    />
+                  </View>
+
+                </>
+              )
+            }
+
+          </View>
+
+        );
+
       case 'kegiatan':
         return (
           <>
@@ -93,7 +177,6 @@ const ItemList = ({
         styles.wrapperCustom,
       ]}>
       <View style={styles.container}>
-        {/* <Image source={image} style={styles.image} /> */}
         {renderContent()}
       </View>
     </Pressable>
@@ -131,7 +214,7 @@ const styles = StyleSheet.create({
     color: '#020202',
   },
   price: {
-    fontSize: 13,
+    fontSize: SIZES.medium,
     fontFamily: 'Poppins-Regular',
     color: '#8D92A3',
   },
@@ -142,11 +225,11 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 10,
+    fontSize: SIZES.small,
     color: '#8D92A3',
   },
   status: status => ({
-    fontSize: 10,
+    fontSize: SIZES.small,
     fontFamily: 'Poppins-Regular',
     color: status === 'Ditolak' ? '#D9435E' : '#1ABC9C',
   }),

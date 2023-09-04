@@ -6,13 +6,12 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useWindowDimensions,
 } from 'react-native';
-import { IcBackWhite } from '../../assets';
-import { Button, Counter, Number, Rating } from '../../components';
-import { getData } from '../../utils';
 import RenderHtml from 'react-native-render-html';
-import { useWindowDimensions } from 'react-native';
+import { IcBackWhite } from '../../assets';
 import { COLORS, SIZES } from '../../constants';
+import { getData } from '../../utils';
 
 const NewsDetail = ({ navigation, route }) => {
   const { judul, picturePath, isi, tanggal_posting } = route.params;
@@ -28,9 +27,7 @@ const NewsDetail = ({ navigation, route }) => {
       setUserProfile(res);
     });
   }, []);
-  const onOrder = () => {
-    navigation.navigate('OrderSummary', data);
-  };
+
   return (
     <View style={styles.page}>
       <ImageBackground source={{ uri: picturePath }} style={styles.cover}>

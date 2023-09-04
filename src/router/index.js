@@ -42,7 +42,10 @@ const MainApp = () => {
       <Tab.Screen
         name="Pengaduan"
         component={Pengaduan}
-        options={{ headerShown: false, tabBarHideOnKeyboard: true }}
+        options={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true
+        }}
       />
       {/* <Tab.Screen
         name="Notif"
