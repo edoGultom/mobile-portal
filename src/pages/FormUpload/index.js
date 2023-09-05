@@ -213,7 +213,7 @@ const FormUpload = ({ navigation }) => {
               placeholder={'Masukkan Tanggal Lahir '}
               value={selectedDate}
               editable={false}
-              extraStyles={(selectedDate.length > 0) ? '#020202' : ''}
+              extraColor={(selectedDate.length > 0) && '#020202'}
             />
           </Pressable>
           <Gap height={16} />

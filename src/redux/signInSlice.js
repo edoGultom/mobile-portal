@@ -9,7 +9,6 @@ export const signInAction = createAsyncThunk(
   'post/postSignIn',
   async (obj, { dispatch }) => {
     dispatch(addLoading(true));
-    console.log(BE_API_HOST, 'asdsd')
     const { form } = obj;
     let formData = new FormData();
     formData.append('username', form.username);
