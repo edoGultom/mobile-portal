@@ -17,16 +17,36 @@ const SignUpAddress = ({ navigation }) => {
   });
   const dataKelurahan = [
     {
-      label: 'Beringin',
-      value: 'Beringin',
+      label: 'Dusun Cempaka',
+      value: 'Dusun Cempaka',
     },
     {
-      label: 'Sidourip',
-      value: 'Sidourip',
+      label: 'Dusun Budiman',
+      value: 'Dusun Budiman',
     },
     {
-      label: 'Tumpatan',
-      value: 'SiTumpatandourip',
+      label: 'Dusun Damai',
+      value: 'Dusun Damai',
+    },
+    {
+      label: 'Dusun Sepakat',
+      value: 'Dusun Sepakat',
+    },
+    {
+      label: 'Dusun Mawar',
+      value: 'Dusun Mawar',
+    },
+    {
+      label: 'Dusun Delima',
+      value: 'Dusun Delima',
+    },
+    {
+      label: 'Dusun Masjid',
+      value: 'Dusun Masjid',
+    },
+    {
+      label: 'DUsun Melati',
+      value: 'DUsun Melati',
     },
   ];
 

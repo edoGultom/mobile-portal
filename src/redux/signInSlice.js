@@ -1,15 +1,16 @@
-import {BE_API_HOST} from '@env';
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import { BE_API_HOST } from '@env';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import {showMessage, storeData} from '../utils';
-import {addLoading} from './globalSlice';
+import { showMessage, storeData } from '../utils';
+import { addLoading } from './globalSlice';
 
 export const signInAction = createAsyncThunk(
   'post/postSignIn',
-  async (obj, {dispatch}) => {
+  async (obj, { dispatch }) => {
     dispatch(addLoading(true));
-    const {form} = obj;
+    console.log(BE_API_HOST, 'asdsd')
+    const { form } = obj;
     let formData = new FormData();
     formData.append('username', form.username);
     formData.append('password', form.password);
@@ -30,11 +31,11 @@ export const signInAction = createAsyncThunk(
 
         //data token
         const token = `${res.data.token_type} ${res.data.access_token}`;
-        storeData('token', {value: token});
+        storeData('token', { value: token });
 
         dispatch(addLoading(false));
 
-        obj.navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+        obj.navigation.reset({ index: 0, routes: [{ name: 'MainApp' }] });
       })
       .catch(err => {
         dispatch(addLoading(false));
